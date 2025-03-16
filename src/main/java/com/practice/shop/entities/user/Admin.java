@@ -1,9 +1,13 @@
 package com.practice.shop.entities.user;
 
 import com.practice.shop.entities.admin.Report;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 public class Admin extends User {
 
     private List<Report> reports;
@@ -12,11 +16,4 @@ public class Admin extends User {
         super(id, name, email);
     }
 
-    public List<Report> getReports() {
-        return reports;
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
-    }
 }
