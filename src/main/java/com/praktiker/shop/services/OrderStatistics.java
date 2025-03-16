@@ -1,4 +1,4 @@
-package com.praktiker.shop.service;
+package com.praktiker.shop.services;
 
 import com.praktiker.shop.entities.admin.Report;
 import com.praktiker.shop.entities.admin.SalesAnalysis;
