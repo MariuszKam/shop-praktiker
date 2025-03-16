@@ -1,7 +1,6 @@
 package com.praktiker.shop.entities.order;
 
 import com.praktiker.shop.entities.product.Product;
-import com.praktiker.shop.entities.user.Customer;
 
 import java.util.List;
 
