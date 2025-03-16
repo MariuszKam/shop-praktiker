@@ -1,6 +1,6 @@
-package com.practice.shop.entities.user;
+package com.praktiker.shop.entities.user;
 
-import com.practice.shop.entities.product.Product;
+import com.praktiker.shop.entities.product.Product;
 import lombok.Getter;
 import lombok.Setter;
 

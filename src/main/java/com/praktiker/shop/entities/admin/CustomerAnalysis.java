@@ -1,6 +1,6 @@
-package com.practice.shop.entities.admin;
+package com.praktiker.shop.entities.admin;
 
-import com.practice.shop.entities.user.Customer;
+import com.praktiker.shop.entities.user.Customer;
 
 import java.util.List;
 

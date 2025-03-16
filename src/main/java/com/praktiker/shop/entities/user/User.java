@@ -1,4 +1,4 @@
-package com.practice.shop.entities.user;
+package com.praktiker.shop.entities.user;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

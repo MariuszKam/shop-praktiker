@@ -1,4 +1,4 @@
-package com.practice.shop.entities.product;
+package com.praktiker.shop.entities.product;
 
 import java.util.ArrayList;
 import java.util.List;

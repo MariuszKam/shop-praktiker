@@ -1,4 +1,4 @@
-package com.practice.shop.entities.order;
+package com.praktiker.shop.entities.order;
 
 import java.time.LocalDate;
 

@@ -1,6 +1,6 @@
-package com.practice.shop.entities.admin;
+package com.praktiker.shop.entities.admin;
 
-import com.practice.shop.entities.order.Order;
+import com.praktiker.shop.entities.order.Order;
 
 import java.util.List;
 

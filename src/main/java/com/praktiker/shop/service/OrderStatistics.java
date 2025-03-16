@@ -1,9 +1,9 @@
-package com.practice.shop.service;
+package com.praktiker.shop.service;
 
-import com.practice.shop.entities.admin.Report;
-import com.practice.shop.entities.admin.SalesAnalysis;
-import com.practice.shop.entities.order.Order;
-import com.practice.shop.entities.product.Product;
+import com.praktiker.shop.entities.admin.Report;
+import com.praktiker.shop.entities.admin.SalesAnalysis;
+import com.praktiker.shop.entities.order.Order;
+import com.praktiker.shop.entities.product.Product;
 
 import java.util.Comparator;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.practice.shop.entities.admin;
+package com.praktiker.shop.entities.admin;
 
 import java.util.List;
 
