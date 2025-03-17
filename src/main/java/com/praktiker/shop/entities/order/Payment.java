@@ -1,40 +1,23 @@
 package com.praktiker.shop.entities.order;
 
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
 
-public abstract class Payment {
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Payment {
 
     private int id;
     private float amount;
     private LocalDate date;
+    private PaymentMethod paymentMethod;
 
-    public Payment(int id, float amount, LocalDate date) {
-        this.id = id;
-        this.amount = amount;
-        this.date = date;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public float getAmount() {
-        return amount;
-    }
-
-    public void setAmount(float amount) {
-        this.amount = amount;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
 }
