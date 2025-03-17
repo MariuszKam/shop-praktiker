@@ -1,5 +1,6 @@
 package com.praktiker.shop.controllers;
 
+import com.praktiker.shop.entities.user.Role;
 import com.praktiker.shop.entities.user.User;
 import com.praktiker.shop.persistance.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +24,7 @@ public class AuthController {
     @PostMapping("/register")
     public User register(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.ROLE_CUSTOMER);
         userRepository.save(user);
         return user;
     }
