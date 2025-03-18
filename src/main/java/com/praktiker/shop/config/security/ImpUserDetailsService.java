@@ -1,4 +1,4 @@
-package com.praktiker.shop.services.security;
+package com.praktiker.shop.config.security;
 
 import com.praktiker.shop.persistance.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
