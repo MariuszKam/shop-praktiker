@@ -1,9 +1,7 @@
 package com.praktiker.shop.entities.product;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.praktiker.shop.entities.order.OrderItem;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +20,8 @@ public class Product {
     private String name;
     private double price;
     private ProductType productType;
+    @OneToMany(mappedBy = "product")
+    @JoinColumn(name = "product_id")
+    private OrderItem orderItem;
 
 }

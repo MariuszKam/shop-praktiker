@@ -18,8 +18,8 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
-    @JoinColumn(name = "order_id")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "order_id" )
     private List<OrderItem> orderItems;
     private OrderStatus orderStatus;
     @ManyToOne
