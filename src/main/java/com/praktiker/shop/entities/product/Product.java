@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
+@Table(name = "products")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,8 +24,7 @@ public class Product {
     private String name;
     private BigDecimal price;
     private ProductType productType;
-    @OneToMany(mappedBy = "product")
-    @JoinColumn(name = "product_id")
-    private OrderItem orderItem;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
 
 }

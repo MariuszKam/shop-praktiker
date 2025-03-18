@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,7 +25,6 @@ public class User implements UserDetails {
     private String password;
     private String email;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id")
     private List<Order> orders;
     @Enumerated(EnumType.STRING)
     private Role role;

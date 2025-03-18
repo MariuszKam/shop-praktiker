@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
+@Table(name = "orders")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,7 +20,6 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "order_id" )
     private List<OrderItem> orderItems;
     private OrderStatus orderStatus;
     @ManyToOne
