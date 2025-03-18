@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 public class Payment {
 
     private int id;
-    private float amount;
+    private BigDecimal amount;
     private LocalDate date;
     private PaymentMethod paymentMethod;
 
