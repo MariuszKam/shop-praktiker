@@ -1,5 +1,6 @@
 package com.praktiker.shop.entities.user;
 
+import com.praktiker.shop.entities.order.Order;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,22 +23,15 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String email;
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<Order> orders;
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(role);
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
     }
 
     @Override

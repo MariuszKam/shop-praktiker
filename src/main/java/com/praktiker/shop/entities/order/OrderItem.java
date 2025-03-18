@@ -1,30 +1,30 @@
 package com.praktiker.shop.entities.order;
 
-import com.praktiker.shop.entities.user.User;
+import com.praktiker.shop.entities.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class OrderItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
-    @JoinColumn(name = "order_id")
-    private List<OrderItem> orderItems;
-    private OrderStatus orderStatus;
+    private int quantity;
+
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-    private Payment payment;
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
 }
