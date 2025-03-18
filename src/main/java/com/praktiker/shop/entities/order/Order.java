@@ -25,6 +25,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @OneToOne
+    @JoinColumn(name = "order_id")
     private Payment payment;
 
 }

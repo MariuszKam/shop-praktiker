@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Payment {
 
-    private int id;
+    private Long id;
     private BigDecimal amount;
     private LocalDate date;
     private PaymentMethod paymentMethod;
