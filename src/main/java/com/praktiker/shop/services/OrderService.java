@@ -24,13 +24,11 @@ public class OrderService {
 
     public List<Order> getOrdersByUsername(String username) {
         return orderRepository.findAllByUser_Username(username);
-
     }
 
     public Order creatOrder(Order order) {
         return orderRepository.save(order);
     }
-
 
     public void changeOrderStatus(Long orderId, OrderStatus newStatus) {
         Order order = orderRepository.findById(orderId)
