@@ -5,12 +5,14 @@ import com.praktiker.shop.entities.order.OrderItem;
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.exceptions.OrderNotFoundException;
 import com.praktiker.shop.persistance.OrderRepository;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Service
 public class ProductStatistic {
 
     private OrderRepository orderRepository;
