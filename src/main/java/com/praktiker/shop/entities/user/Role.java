@@ -1,13 +1,29 @@
 package com.praktiker.shop.entities.user;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
-public enum Role implements GrantedAuthority {
+@Entity
+@Table(name = "roles")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Role implements GrantedAuthority {
 
-    ROLE_ADMIN, ROLE_CUSTOMER, ROLE_SUPPLIER;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+
+    @Column(nullable = false, length = 16)
+    private String name;
 
     @Override
     public String getAuthority() {
-        return name();
+        return name;
     }
 }
