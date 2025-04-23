@@ -5,6 +5,7 @@ import com.praktiker.shop.entities.order.OrderItem;
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.exceptions.OrderNotFoundException;
 import com.praktiker.shop.persistance.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,13 +14,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProductStatistic {
 
-    private OrderRepository orderRepository;
-
-    public ProductStatistic(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
+    private final OrderRepository orderRepository;
 
     public Product getBestseller() {
         List<Order> orders = orderRepository.findAll();

@@ -4,18 +4,16 @@ import com.praktiker.shop.entities.order.Order;
 import com.praktiker.shop.entities.order.OrderStatus;
 import com.praktiker.shop.exceptions.OrderNotFoundException;
 import com.praktiker.shop.persistance.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class OrderService {
 
-    private OrderRepository orderRepository;
-
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
+    private final OrderRepository orderRepository;
 
     public Order getOrderById(Long id) {
         return orderRepository.findById(id).orElseThrow(() ->

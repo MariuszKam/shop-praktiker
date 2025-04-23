@@ -3,6 +3,7 @@ package com.praktiker.shop.services.statistics;
 import com.praktiker.shop.entities.order.Order;
 import com.praktiker.shop.exceptions.OrderNotFoundException;
 import com.praktiker.shop.persistance.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -11,13 +12,10 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class OrderStatistics {
 
-    private OrderRepository orderRepository;
-
-    public OrderStatistics(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
+    private final OrderRepository orderRepository;
 
     public BigDecimal getAverageOrderSum() {
         List<Order> orders = orderRepository.findAll();
