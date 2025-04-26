@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -51,9 +52,6 @@ public class ProductStatisticsTest {
         Product result = productStatistic.getBestseller();
 
         assertEquals(bestseller, result, "Bestseller was not found correctly!");
-    }
-
-    private void assertEquals(Product bestseller, Product result, String s) {
     }
 
     @DisplayName("Should throw OrderNotFoundException when no orders exist")
