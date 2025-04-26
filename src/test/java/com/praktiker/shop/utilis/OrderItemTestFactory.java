@@ -16,9 +16,13 @@ public class OrderItemTestFactory {
         return orderItem;
     }
 
-    public static List<OrderItem> createOrderItemList(Long id, BigDecimal quantity) {
-        Product product = ProductTestFactory.createProduct();
+    public static List<OrderItem> createOrderItemList(Long id, BigDecimal quantity, Product product) {
         OrderItem orderItem = createOrderItem(id, quantity, product);
         return List.of(orderItem);
+    }
+
+    public static List<OrderItem> createOrderItemList(Long id, BigDecimal quantity) {
+        Product product = ProductTestFactory.createProduct();
+        return createOrderItemList(id, quantity, product);
     }
 }
