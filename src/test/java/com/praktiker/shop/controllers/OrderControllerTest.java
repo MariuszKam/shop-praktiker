@@ -3,6 +3,7 @@ package com.praktiker.shop.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.praktiker.shop.config.security.SecurityConfig;
 import com.praktiker.shop.entities.order.Order;
+import com.praktiker.shop.entities.order.OrderStatus;
 import com.praktiker.shop.entities.user.User;
 import com.praktiker.shop.services.OrderService;
 import com.praktiker.shop.utilis.ContentType;
@@ -17,10 +18,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,5 +74,43 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$[0].user.username").value("Adam"))
                 .andExpect(jsonPath("$[1].user.email").value("adam@mail.com"))
                 .andExpect(jsonPath("$[1].user.username").value("Adam"));
+    }
+
+    @Test
+    public void shouldCreateOrder() throws Exception {
+        User user = UserTestFactory.createUser();
+        Order order = OrderTestFactory.createOrder(user);
+        order.setId(1L);
+
+        when(orderService.creatOrder(any(Order.class))).thenReturn(order);
+
+        mockMvc.perform(post("/order")
+                .with(csrf())
+                .with(user(user))
+                .contentType(ContentType.JSON.getName())
+                .content(objectMapper.writeValueAsString(order)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.orderStatus").value("CREATED"))
+                .andExpect(jsonPath("$.user.email").value("adam@mail.com"));
+    }
+
+    @Test
+    public void shouldUpdateStatus() throws Exception {
+        User user = UserTestFactory.createUser();
+        Order order = OrderTestFactory.createOrder(user);
+        order.setId(1L);
+
+        doAnswer(invocation -> {
+            order.setOrderStatus(OrderStatus.PAID);
+            return order;
+        }).when(orderService).changeOrderStatus(1L, OrderStatus.PAID);
+
+        mockMvc.perform(put("/order/1/status")
+                .with(csrf())
+                .with(user(user))
+                .param("status", "PAID")
+                .contentType(ContentType.JSON.getName()))
+                .andExpect(status().isOk());
     }
 }
