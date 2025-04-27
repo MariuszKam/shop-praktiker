@@ -1,4 +1,4 @@
-package com.praktiker.shop.utilis;
+package com.praktiker.shop.utilis.factories;
 
 import com.praktiker.shop.entities.user.User;
 
