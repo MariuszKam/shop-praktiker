@@ -1,0 +1,52 @@
+package com.praktiker.shop.controllers;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.praktiker.shop.config.security.SecurityConfig;
+import com.praktiker.shop.entities.user.User;
+import com.praktiker.shop.services.AuthService;
+import com.praktiker.shop.utilis.ContentType;
+import com.praktiker.shop.utilis.UserTestFactory;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(AuthController.class)
+@Import(SecurityConfig.class)
+public class AuthControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @MockitoBean
+    private AuthService authService;
+
+    @Test
+    public void shouldRegisterUser() throws Exception {
+        User user = UserTestFactory.createUser();
+        user.setId(1L);
+
+        when(authService.register(any(User.class))).thenReturn(user);
+
+        mockMvc.perform(post("/auth/register")
+                .with(csrf())
+                .contentType(ContentType.JSON.getName())
+                .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.username").value("Adam"))
+                .andExpect(jsonPath("$.email").value("adam@mail.com"));
+    }
+}
