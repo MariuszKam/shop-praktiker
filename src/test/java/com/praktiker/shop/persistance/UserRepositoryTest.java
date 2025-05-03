@@ -16,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class UserRepositoryTest {
 
     @Autowired
-    private  UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private  TestEntityManager testEntityManager;
+    private TestEntityManager testEntityManager;
 
     @Test
     public void shouldFindUserByUsername() {

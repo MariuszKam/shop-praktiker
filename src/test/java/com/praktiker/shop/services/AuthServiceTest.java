@@ -52,7 +52,7 @@ public class AuthServiceTest {
         UserRegisterResponse response = authService.register(request);
 
         assertEquals("Adam", response.username(), "Username is different!");
-        assertEquals("adam@mail.com", response.email(),"Email is different!");
+        assertEquals("adam@mail.com", response.email(), "Email is different!");
         assertTrue(response.roles().contains(role), "Role is different!");
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
@@ -60,7 +60,7 @@ public class AuthServiceTest {
         User savedUser = userCaptor.getValue();
 
         assertEquals("Adam", savedUser.getUsername(), "Username is different!");
-        assertEquals("hashed", savedUser.getPassword(),"Password is not encoded!");
+        assertEquals("hashed", savedUser.getPassword(), "Password is not encoded!");
         assertEquals("adam@mail.com", savedUser.getEmail(), "Email is different!");
         assertTrue(savedUser.getRoles().contains(role), "Role is different!");
 

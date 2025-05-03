@@ -6,9 +6,9 @@ import com.praktiker.shop.entities.user.User;
 import com.praktiker.shop.exceptions.OrderNotFoundException;
 import com.praktiker.shop.persistance.OrderRepository;
 import com.praktiker.shop.services.statistics.OrderStatistics;
-import com.praktiker.shop.utilis.OrderItemTestFactory;
-import com.praktiker.shop.utilis.OrderTestFactory;
-import com.praktiker.shop.utilis.UserTestFactory;
+import com.praktiker.shop.utilis.factories.OrderItemTestFactory;
+import com.praktiker.shop.utilis.factories.OrderTestFactory;
+import com.praktiker.shop.utilis.factories.UserTestFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,7 +53,7 @@ public class OrderStatisticsTest {
 
 
         assertThrows(OrderNotFoundException.class, () -> orderStatistics.getAverageOrderSum(),
-                "Should throw OrderNotFoundException!");
+                     "Should throw OrderNotFoundException!");
     }
 
     @DisplayName("Should find the most expensive order")
@@ -61,7 +61,7 @@ public class OrderStatisticsTest {
     void shouldFindMostExpensiveOrder() {
         List<OrderItem> orderItemsFirst = OrderItemTestFactory.createOrderItemList(1L, BigDecimal.ONE);
         Order cheapOrder = OrderTestFactory.createOrder(orderItemsFirst);
-        
+
         List<OrderItem> orderItemsSecond = OrderItemTestFactory.createOrderItemList(2L, BigDecimal.valueOf(2));
         Order expensiveOrder = OrderTestFactory.createOrder(orderItemsSecond);
 
@@ -79,7 +79,7 @@ public class OrderStatisticsTest {
         when(orderRepository.findAll()).thenReturn(List.of());
 
         assertThrows(OrderNotFoundException.class, () -> orderStatistics.getMostExpensive(),
-                "Should throw OrderNotFoundException!");
+                     "Should throw OrderNotFoundException!");
     }
 
 }

@@ -7,14 +7,14 @@ import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.entities.user.User;
 import com.praktiker.shop.services.statistics.OrderStatistics;
 import com.praktiker.shop.services.statistics.ProductStatistic;
-import com.praktiker.shop.utilis.ContentType;
-import com.praktiker.shop.utilis.OrderTestFactory;
-import com.praktiker.shop.utilis.ProductTestFactory;
-import com.praktiker.shop.utilis.UserTestFactory;
+import com.praktiker.shop.utilis.factories.OrderTestFactory;
+import com.praktiker.shop.utilis.factories.ProductTestFactory;
+import com.praktiker.shop.utilis.factories.UserTestFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -50,11 +50,11 @@ public class StatisticControllerTest {
         when(orderStatistics.getAverageOrderSum()).thenReturn(averageOrderSum);
 
         mockMvc.perform(get("/statistics/order/average")
-                .with(csrf())
-                .with(user("admin").roles("ADMIN"))
-                .contentType(ContentType.JSON.getName()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value(150.50));
+                                .with(csrf())
+                                .with(user("admin").roles("ADMIN"))
+                                .contentType(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$").value(150.50));
     }
 
     @Test
@@ -66,13 +66,13 @@ public class StatisticControllerTest {
         when(orderStatistics.getMostExpensive()).thenReturn(order);
 
         mockMvc.perform(get("/statistics/order/most-expensive")
-                .with(csrf())
-                .with(user(user))
-                .contentType(ContentType.JSON.getName()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.orderStatus").value("CREATED"))
-                .andExpect(jsonPath("$.user.email").value("adam@mail.com"));
+                                .with(csrf())
+                                .with(user(user))
+                                .contentType(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(1L))
+               .andExpect(jsonPath("$.orderStatus").value("CREATED"))
+               .andExpect(jsonPath("$.user.email").value("adam@mail.com"));
     }
 
     @Test
@@ -83,12 +83,12 @@ public class StatisticControllerTest {
         when(productStatistic.getBestseller()).thenReturn(product);
 
         mockMvc.perform(get("/statistics/product/best-seller")
-                .with(csrf())
-                .with(user("admin").roles("ADMIN"))
-                .contentType(ContentType.JSON.getName()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.name").value("Default Product"))
-                .andExpect(jsonPath("$.price").value(99.99));
+                                .with(csrf())
+                                .with(user("admin").roles("ADMIN"))
+                                .contentType(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(1L))
+               .andExpect(jsonPath("$.name").value("Default Product"))
+               .andExpect(jsonPath("$.price").value(99.99));
     }
 }

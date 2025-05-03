@@ -5,13 +5,13 @@ import com.praktiker.shop.config.security.SecurityConfig;
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.entities.user.User;
 import com.praktiker.shop.services.ProductService;
-import com.praktiker.shop.utilis.ContentType;
-import com.praktiker.shop.utilis.ProductTestFactory;
-import com.praktiker.shop.utilis.UserTestFactory;
+import com.praktiker.shop.utilis.factories.ProductTestFactory;
+import com.praktiker.shop.utilis.factories.UserTestFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -45,14 +45,14 @@ public class ProductControllerTest {
         when(productService.getProductById(product.getId())).thenReturn(product);
 
         mockMvc.perform(get("/products/1")
-                .with(csrf())
-                .with(user(user))
-                .contentType(ContentType.JSON.getName())
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.name").value("Default Product"))
-                .andExpect(jsonPath("$.price").value("99.99"))
-                .andExpect(jsonPath("$.productType").value("ELECTRONICS"));
+                                .with(csrf())
+                                .with(user(user))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(product)))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(1L))
+               .andExpect(jsonPath("$.name").value("Default Product"))
+               .andExpect(jsonPath("$.price").value("99.99"))
+               .andExpect(jsonPath("$.productType").value("ELECTRONICS"));
     }
 }

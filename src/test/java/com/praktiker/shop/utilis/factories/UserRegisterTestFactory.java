@@ -16,11 +16,11 @@ public class UserRegisterTestFactory {
         return new UserRegisterRequest("Adam", "Password123", "adam@mail.com");
     }
 
-    public static UserRegisterResponse createUserResponse(Long id, String username,String email, Set<Role> roles) {
+    public static UserRegisterResponse createUserResponse(Long id, String username, String email, Set<Role> roles) {
         return new UserRegisterResponse(id, username, email, roles);
     }
 
-    public static UserRegisterResponse createUserResponse (){
+    public static UserRegisterResponse createUserResponse() {
         return new UserRegisterResponse(
                 1L,
                 "Adam",

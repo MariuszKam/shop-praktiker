@@ -5,12 +5,12 @@ import com.praktiker.shop.config.security.SecurityConfig;
 import com.praktiker.shop.dto.user.UserRegisterRequest;
 import com.praktiker.shop.dto.user.UserRegisterResponse;
 import com.praktiker.shop.services.AuthService;
-import com.praktiker.shop.utilis.ContentType;
 import com.praktiker.shop.utilis.factories.UserRegisterTestFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -43,12 +43,12 @@ public class AuthControllerTest {
         when(authService.register(any(UserRegisterRequest.class))).thenReturn(response);
 
         mockMvc.perform(post("/auth/register")
-                .with(csrf())
-                .contentType(ContentType.JSON.getName())
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.username").value("Adam"))
-                .andExpect(jsonPath("$.email").value("adam@mail.com"));
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request)))
+               .andExpect(status().isCreated())
+               .andExpect(jsonPath("$.id").value(1L))
+               .andExpect(jsonPath("$.username").value("Adam"))
+               .andExpect(jsonPath("$.email").value("adam@mail.com"));
     }
 }

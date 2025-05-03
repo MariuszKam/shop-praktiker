@@ -3,7 +3,7 @@ package com.praktiker.shop.services;
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.exceptions.ProductNotFoundException;
 import com.praktiker.shop.persistance.ProductRepository;
-import com.praktiker.shop.utilis.ProductTestFactory;
+import com.praktiker.shop.utilis.factories.ProductTestFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,6 +50,6 @@ public class ProductServiceTest {
         when(productRepository.findById(notExist)).thenReturn(Optional.empty());
 
         assertThrows(ProductNotFoundException.class, () -> productService.getProductById(notExist),
-                "Should throw ProductNotFoundException for non existing ID");
+                     "Should throw ProductNotFoundException for non existing ID");
     }
 }

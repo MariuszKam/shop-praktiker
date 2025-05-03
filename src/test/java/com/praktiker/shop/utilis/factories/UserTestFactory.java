@@ -10,11 +10,11 @@ public class UserTestFactory {
     public static List<User> createUsers() {
         List<User> users = new ArrayList<>();
 
-        users.add(createUser("Adam", "Password123","adam@mail.com"));
-        users.add(createUser("Alice", "Password456","alice@mail.com"));
-        users.add(createUser("Bob", "Password789","bob@mail.com"));
-        users.add(createUser("Eve", "Password012","eve@mail.com"));
-        users.add(createUser("Mallory", "Password345","mallory@mail.com"));
+        users.add(createUser("Adam", "Password123", "adam@mail.com"));
+        users.add(createUser("Alice", "Password456", "alice@mail.com"));
+        users.add(createUser("Bob", "Password789", "bob@mail.com"));
+        users.add(createUser("Eve", "Password012", "eve@mail.com"));
+        users.add(createUser("Mallory", "Password345", "mallory@mail.com"));
 
         return users;
     }
@@ -28,6 +28,6 @@ public class UserTestFactory {
     }
 
     public static User createUser() {
-        return createUser("Adam", "Password123","adam@mail.com");
+        return createUser("Adam", "Password123", "adam@mail.com");
     }
 }
