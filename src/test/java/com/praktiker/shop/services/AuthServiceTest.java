@@ -6,7 +6,7 @@ import com.praktiker.shop.entities.user.Role;
 import com.praktiker.shop.entities.user.User;
 import com.praktiker.shop.persistance.RoleRepository;
 import com.praktiker.shop.persistance.UserRepository;
-import com.praktiker.shop.utilis.factories.UserRegisterTestFactory;
+import com.praktiker.shop.utilis.factories.UserTestFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -40,7 +40,7 @@ public class AuthServiceTest {
 
     @Test
     public void shouldRegisterUserWithEncodedPasswordAndDefaultRole() {
-        UserRegisterRequest request = UserRegisterTestFactory.createUserRequest();
+        UserRegisterRequest request = UserTestFactory.createUserRequest();
 
         Role role = new Role();
         role.setName("ROLE_USER");
@@ -51,9 +51,9 @@ public class AuthServiceTest {
 
         UserRegisterResponse response = authService.register(request);
 
-        assertEquals("Adam", response.username(), "Username is different!");
-        assertEquals("adam@mail.com", response.email(), "Email is different!");
-        assertTrue(response.roles().contains(role), "Role is different!");
+        assertEquals(request.getUsername(), response.username(), "Username is different!");
+        assertEquals(request.getEmail(), response.email(), "Email is different!");
+        assertTrue(response.roles().contains(role.getName()), "Role is different!");
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userCaptor.capture());
