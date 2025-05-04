@@ -1,9 +1,11 @@
 package com.praktiker.shop.services.statistic;
 
+import com.praktiker.shop.dto.product.ProductResponse;
 import com.praktiker.shop.entities.order.Order;
 import com.praktiker.shop.entities.order.OrderItem;
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.exceptions.OrderNotFoundException;
+import com.praktiker.shop.mappers.ProductMapper;
 import com.praktiker.shop.persistance.OrderRepository;
 import com.praktiker.shop.services.statistics.ProductStatistic;
 import com.praktiker.shop.utilis.factories.OrderItemTestFactory;
@@ -51,9 +53,9 @@ public class ProductStatisticsTest {
 
         when(orderRepository.findAll()).thenReturn(List.of(orderFirst, orderSecond));
 
-        Product result = productStatistic.getBestseller();
+        ProductResponse actual = productStatistic.getBestseller();
 
-        assertEquals(bestseller, result, "Bestseller was not found correctly!");
+        assertEquals(ProductMapper.toResponse(bestseller), actual, "Bestseller was not found correctly!");
     }
 
     @DisplayName("Should throw OrderNotFoundException when no orders exist")

@@ -28,4 +28,13 @@ public class ProductTestFactory {
                        createProduct(2L, "T-shirt", BigDecimal.valueOf(49.99), ProductType.CLOTH),
                        createProduct(3L, "Book", BigDecimal.valueOf(29.99), ProductType.BOOK));
     }
+
+    public static List<Product> createProductsForRepo() {
+        return List.of(
+                Product.builder().name("Laptop").price(BigDecimal.valueOf(2999.99)).productType(ProductType.ELECTRONICS)
+                       .build(),
+                Product.builder().name("T-shirt").price(BigDecimal.valueOf(49.99)).productType(ProductType.CLOTH)
+                       .build(),
+                Product.builder().name("Book").price(BigDecimal.valueOf(29.99)).productType(ProductType.BOOK).build());
+    }
 }

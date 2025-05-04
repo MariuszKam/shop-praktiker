@@ -71,7 +71,7 @@ public class OrderControllerTest {
     public void shouldGetOrdersByAuthenticatedUser() throws Exception {
         User user = UserTestFactory.createUser();
 
-        List<Order> orders = OrderTestFactory.createOrdersForUser(user);
+        List<Order> orders = OrderTestFactory.createOrders(user);
 
         List<OrderResponse> response = OrderTestFactory.createResponses(orders);
 

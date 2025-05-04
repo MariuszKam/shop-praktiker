@@ -77,7 +77,7 @@ public class OrderServiceTest {
     public void shouldGetOrderByUsername() {
         User user = UserTestFactory.createUser();
 
-        List<Order> orders = OrderTestFactory.createOrdersForUser(user);
+        List<Order> orders = OrderTestFactory.createOrders(user);
 
         when(orderRepository.findAllByUser_Username(user.getUsername())).thenReturn(orders);
 

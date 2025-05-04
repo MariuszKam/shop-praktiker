@@ -2,6 +2,7 @@ package com.praktiker.shop.persistance;
 
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.entities.product.ProductType;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -10,8 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 public class ProductRepositoryTest {
@@ -24,19 +24,27 @@ public class ProductRepositoryTest {
 
     @Test
     public void shouldFindProductByName() {
-        Product product = new Product();
-        product.setName("How to code");
-        product.setPrice(new BigDecimal("26.99"));
-        product.setProductType(ProductType.BOOK);
+        Product product = Product.builder()
+                                 .name("How to code")
+                                 .price(new BigDecimal("26.99"))
+                                 .productType(ProductType.BOOK)
+                                 .build();
 
         testEntityManager.persist(product);
         testEntityManager.flush();
 
-        Optional<Product> found = productRepository.findByName("How to code");
-        assertTrue(found.isPresent(), "Product is not present!");
-        Product actual = found.get();
-        assertEquals("How to code", actual.getName(), "Product name is different!");
-        assertEquals(new BigDecimal("26.99"), actual.getPrice(), "Product price is different!");
-        assertEquals(ProductType.BOOK, actual.getProductType(), "Product type is different!");
+        Product found = productRepository.findByName("How to code")
+                                         .orElseThrow(() -> new AssertionError("Product not found"));
+
+        assertThat(found.getName()).isEqualTo("How to code");
+        assertThat(found.getPrice()).isEqualByComparingTo("26.99");
+        assertThat(found.getProductType()).isEqualTo(ProductType.BOOK);
+    }
+
+    @Test
+    @DisplayName("should return empty when product name not found")
+    void shouldReturnEmptyWhenProductNotFound() {
+        Optional<Product> result = productRepository.findByName("Nonexistent Product");
+        assertThat(result).isEmpty();
     }
 }

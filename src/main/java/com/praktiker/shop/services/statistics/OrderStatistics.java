@@ -1,7 +1,9 @@
 package com.praktiker.shop.services.statistics;
 
+import com.praktiker.shop.dto.order.OrderResponse;
 import com.praktiker.shop.entities.order.Order;
 import com.praktiker.shop.exceptions.OrderNotFoundException;
+import com.praktiker.shop.mappers.OrderMapper;
 import com.praktiker.shop.persistance.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,15 +26,19 @@ public class OrderStatistics {
             throw new OrderNotFoundException("Could not find average order. Order list is empty");
         }
 
-        BigDecimal totalSum = orders.stream().map(Order::getTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalSum = orders.stream()
+                                    .map(Order::getTotalPrice)
+                                    .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        return totalSum.divide(BigDecimal.valueOf(orders.size(), 2), RoundingMode.HALF_UP);
+        return totalSum.divide(BigDecimal.valueOf(orders.size()), 2, RoundingMode.HALF_UP);
     }
 
-    public Order getMostExpensive() {
-        return orderRepository.findAll().stream()
-                .max(Comparator.comparing(Order::getTotalPrice))
-                .orElseThrow(() -> new OrderNotFoundException("Could not find most expensive order. Order list is empty"));
+    public OrderResponse getMostExpensive() {
+        Order order = orderRepository.findAll().stream()
+                                     .max(Comparator.comparing(Order::getTotalPrice))
+                                     .orElseThrow(() -> new OrderNotFoundException(
+                                             "Could not find most expensive order. Order list is empty"));
+
+        return OrderMapper.toResponse(order);
     }
 }
