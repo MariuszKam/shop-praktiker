@@ -1,12 +1,20 @@
 package com.praktiker.shop.services;
 
+import com.praktiker.shop.dto.order.OrderCreateRequest;
+import com.praktiker.shop.dto.order.OrderResponse;
+import com.praktiker.shop.dto.order.OrderStatusUpdateRequest;
 import com.praktiker.shop.entities.order.Order;
+import com.praktiker.shop.entities.order.OrderItem;
 import com.praktiker.shop.entities.order.OrderStatus;
+import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.entities.user.User;
 import com.praktiker.shop.exceptions.OrderNotFoundException;
+import com.praktiker.shop.mappers.OrderItemMapper;
 import com.praktiker.shop.persistance.OrderRepository;
-import com.praktiker.shop.utilis.OrderTestFactory;
-import com.praktiker.shop.utilis.UserTestFactory;
+import com.praktiker.shop.persistance.ProductRepository;
+import com.praktiker.shop.persistance.UserRepository;
+import com.praktiker.shop.utilis.factories.OrderTestFactory;
+import com.praktiker.shop.utilis.factories.UserTestFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +27,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,24 +36,29 @@ public class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private ProductRepository productRepository;
+
     @InjectMocks
     private OrderService orderService;
 
-    @DisplayName("Part of testing getOrderById(Long id) - positive case")
+    @DisplayName("Part of testing getOrderById - positive case")
     @Test
     public void shouldGetOrderById() {
-        User user = UserTestFactory.createUser();
-
-        Order order = OrderTestFactory.createOrder(user);
-        order.setId(1L);
+        Order order = OrderTestFactory.createOrder();
 
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
 
-        Order actual = orderService.getOrderById(1L);
+        OrderResponse response = orderService.getOrderById(1L);
 
-        assertEquals(1L, actual.getId(), "ID is wrong!");
-        assertEquals(OrderStatus.CREATED, actual.getOrderStatus(), "Order Status is wrong!");
-        assertEquals(user, actual.getUser(), "User is wrong!");
+        assertEquals(1L, response.orderId(), "ID is not correct");
+        assertEquals(order.getUser().getUsername(), response.username(), "Username is not correct");
+        assertEquals(order.getTotalPrice(), response.totalAmount(), "Total amount price iis not same");
+        assertEquals(OrderStatus.CREATED.name(), response.status(), "Order Status is not correct");
+        assertEquals(OrderItemMapper.toResponse(order.getOrderItems()), response.items(), "Item list is not the same");
     }
 
     @DisplayName("Part of testing getOrderById(Long id) - negative case")
@@ -55,72 +69,82 @@ public class OrderServiceTest {
         when(orderRepository.findById(notExistId)).thenReturn(Optional.empty());
 
         assertThrows(OrderNotFoundException.class, () -> orderService.getOrderById(notExistId),
-                "Should throw OrderNotFoundException for non existing ID");
+                     "Should throw OrderNotFoundException for non existing ID");
     }
 
-    @DisplayName("Testing getOrdersByUsername(String username)")
+    @DisplayName("Testing getOrdersByUsername")
     @Test
     public void shouldGetOrderByUsername() {
         User user = UserTestFactory.createUser();
 
-        List<Order> orders = OrderTestFactory.createOrdersForUser(user);
+        List<Order> orders = OrderTestFactory.createOrders(user);
 
         when(orderRepository.findAllByUser_Username(user.getUsername())).thenReturn(orders);
 
-        List<Order> actual = orderService.getOrdersByUsername(user.getUsername());
+        List<OrderResponse> actual = orderService.getOrdersByUsername(user.getUsername());
 
         assertFalse(actual.isEmpty(), "List should not be empty!");
 
         boolean allMatch = actual.stream()
-                .allMatch(order -> order.getUser().getUsername().equals(user.getUsername()));
+                                 .allMatch(order -> order.username().equals(user.getUsername()));
 
         assertTrue(allMatch, "Not all orders belong to the correct user!");
     }
 
-    @DisplayName("Testing createOrder(Order order")
+    @DisplayName("Testing createOrder")
     @Test
     public void shouldCreateOrder() {
         User user = UserTestFactory.createUser();
 
         Order order = OrderTestFactory.createOrder(user);
 
+        OrderCreateRequest request = OrderTestFactory.createRequest(order);
+
+        List<Product> products = order.getOrderItems().stream()
+                                      .map(OrderItem::getProduct).toList();
+
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        when(productRepository.findAllById(anyCollection())).thenReturn(products);
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Order actual = orderService.creatOrder(order);
+        OrderResponse response = orderService.createOrder(request, user.getUsername());
 
-        assertEquals(order.getOrderStatus(), actual.getOrderStatus(), "Order Status is wrong!");
-        assertEquals(order.getUser(), actual.getUser(), "User is wrong for Order!");
+        assertEquals(order.getUser().getUsername(), response.username(), "User is not correct");
+        assertEquals(order.getTotalPrice(), response.totalAmount(), "Total amount price iis not same");
+        assertEquals(order.getOrderStatus().name(), response.status(), "Order Status is not correct");
+        assertEquals(OrderItemMapper.toResponse(order.getOrderItems()), response.items(), "Item list is not the same");
     }
 
-    @DisplayName("Part of testing changeOrderStatus(Long orderId, OrderStatus newStatus) - positive case")
+    @DisplayName("Part of testing changeOrderStatus - positive case")
     @Test
     public void shouldChangeOrderStatus() {
-        User user = UserTestFactory.createUser();
-
-        Order order = OrderTestFactory.createOrder(user);
-        order.setId(1L);
+        Order order = OrderTestFactory.createOrder();
 
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        orderService.changeOrderStatus(1L, OrderStatus.PAID);
+        OrderStatusUpdateRequest updateRequest = new OrderStatusUpdateRequest(OrderStatus.PAID);
 
-        assertEquals(OrderStatus.PAID, order.getOrderStatus(), "Order status did not changed!");
+        OrderResponse response = orderService.changeOrderStatus(1L, updateRequest);
+
+        assertEquals(updateRequest.getStatus().name(), response.status(), "Order status did not changed!");
     }
 
-    @DisplayName("Part of testing changeOrderStatus(Long orderId, OrderStatus newStatus) - negative case")
+    @DisplayName("Part of testing changeOrderStatus - negative case")
     @Test
     public void shouldThrowOrderNotFoundWhenChangingStatus() {
         Long notExist = 2L;
 
         when(orderRepository.findById(notExist)).thenReturn(Optional.empty());
 
-        assertThrows(OrderNotFoundException.class, () -> orderService.changeOrderStatus(2L, OrderStatus.PAID),
-                "Should throw OrderNotFoundException for Change Status!");
+        OrderStatusUpdateRequest updateRequest = new OrderStatusUpdateRequest(OrderStatus.PAID);
+
+        assertThrows(OrderNotFoundException.class, () -> orderService.changeOrderStatus(2L, updateRequest),
+                     "Should throw OrderNotFoundException for Change Status!");
 
     }
 
-    @DisplayName("Part of testing changeOrderStatus(Long orderId, OrderStatus newStatus) - negative case")
+    @DisplayName("Part of testing changeOrderStatus - negative case(Delivered to Created")
     @Test
     public void shouldThrowIllegalStateExceptionWhenChangingStatus() {
         User user = UserTestFactory.createUser();
@@ -131,7 +155,9 @@ public class OrderServiceTest {
 
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
 
-        assertThrows(IllegalStateException.class, () -> orderService.changeOrderStatus(1L, OrderStatus.CREATED),
-                "Should throw IllegalStateException for change order backwards!");
+        OrderStatusUpdateRequest updateRequest = new OrderStatusUpdateRequest(OrderStatus.CREATED);
+
+        assertThrows(IllegalStateException.class, () -> orderService.changeOrderStatus(1L, updateRequest),
+                     "Should throw IllegalStateException for change order backwards!");
     }
 }

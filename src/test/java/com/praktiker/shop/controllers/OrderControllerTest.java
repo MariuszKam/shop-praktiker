@@ -1,30 +1,35 @@
 package com.praktiker.shop.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.praktiker.shop.config.security.SecurityConfig;
+import com.praktiker.shop.dto.order.OrderCreateRequest;
+import com.praktiker.shop.dto.order.OrderResponse;
+import com.praktiker.shop.dto.order.OrderStatusUpdateRequest;
 import com.praktiker.shop.entities.order.Order;
 import com.praktiker.shop.entities.order.OrderStatus;
 import com.praktiker.shop.entities.user.User;
 import com.praktiker.shop.services.OrderService;
-import com.praktiker.shop.utilis.ContentType;
-import com.praktiker.shop.utilis.OrderTestFactory;
-import com.praktiker.shop.utilis.UserTestFactory;
+import com.praktiker.shop.utilis.factories.OrderTestFactory;
+import com.praktiker.shop.utilis.factories.UserTestFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(OrderController.class)
@@ -42,75 +47,103 @@ public class OrderControllerTest {
 
     @Test
     public void shouldGetOrderById() throws Exception {
-        User user = UserTestFactory.createUser();
-        Order order = OrderTestFactory.createOrder(user);
-        order.setId(1L);
+        Order order = OrderTestFactory.createOrder();
 
-        when(orderService.getOrderById(order.getId())).thenReturn(order);
+        OrderResponse response = OrderTestFactory.createResponse(order);
 
-        mockMvc.perform(get("/order/1")
-                .with(csrf())
-                .with(user(user))
-                .contentType(ContentType.JSON.getName()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.orderStatus").value("CREATED"))
-                .andExpect(jsonPath("$.user.email").value("adam@mail.com"));
+        when(orderService.getOrderById(order.getId())).thenReturn(response);
+
+        MvcResult mvcResult = mockMvc.perform(get(String.format("/order/%d", order.getId()))
+                                                      .with(csrf())
+                                                      .with(user(order.getUser()))
+                                                      .contentType(MediaType.APPLICATION_JSON))
+                                     .andExpect(status().isOk())
+                                     .andReturn();
+
+        String json = mvcResult.getResponse().getContentAsString();
+
+        OrderResponse actual = objectMapper.readValue(json, OrderResponse.class);
+
+        assertEquals(response, actual, "Response is not correct!");
     }
 
     @Test
-    public void shouldGetOrdersByUsername() throws Exception {
+    public void shouldGetOrdersByAuthenticatedUser() throws Exception {
         User user = UserTestFactory.createUser();
-        List<Order> orders = OrderTestFactory.createOrdersList(user);
 
-        when(orderService.getOrdersByUsername(user.getUsername())).thenReturn(orders);
+        List<Order> orders = OrderTestFactory.createOrders(user);
 
-        mockMvc.perform(get("/order/user/Adam")
-                .with(csrf())
-                .with(user(user))
-                .contentType(ContentType.JSON.getName()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].user.email").value("adam@mail.com"))
-                .andExpect(jsonPath("$[0].user.username").value("Adam"))
-                .andExpect(jsonPath("$[1].user.email").value("adam@mail.com"))
-                .andExpect(jsonPath("$[1].user.username").value("Adam"));
+        List<OrderResponse> response = OrderTestFactory.createResponses(orders);
+
+        when(orderService.getOrdersByUsername(user.getUsername())).thenReturn(response);
+
+        MvcResult mvcResult = mockMvc.perform(get(String.format("/order/user/%s", user.getUsername()))
+                                                      .with(csrf())
+                                                      .with(user(user))
+                                                      .contentType(MediaType.APPLICATION_JSON))
+                                     .andExpect(status().isOk())
+                                     .andReturn();
+
+        String json = mvcResult.getResponse().getContentAsString();
+
+        List<OrderResponse> actual = objectMapper.readValue(json, new TypeReference<>() {
+        });
+
+        assertEquals(response, actual, "Response is not correct!");
     }
 
     @Test
     public void shouldCreateOrder() throws Exception {
         User user = UserTestFactory.createUser();
+
         Order order = OrderTestFactory.createOrder(user);
-        order.setId(1L);
 
-        when(orderService.creatOrder(any(Order.class))).thenReturn(order);
+        OrderCreateRequest request = OrderTestFactory.createRequest(order);
 
-        mockMvc.perform(post("/order")
-                .with(csrf())
-                .with(user(user))
-                .contentType(ContentType.JSON.getName())
-                .content(objectMapper.writeValueAsString(order)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.orderStatus").value("CREATED"))
-                .andExpect(jsonPath("$.user.email").value("adam@mail.com"));
+        OrderResponse response = OrderTestFactory.createResponse(order);
+
+        when(orderService.createOrder(any(OrderCreateRequest.class), eq(user.getUsername())))
+                .thenReturn(response);
+
+        MvcResult mvcResult = mockMvc.perform(post("/order")
+                                                      .with(csrf())
+                                                      .with(user(user.getUsername()))
+                                                      .contentType(MediaType.APPLICATION_JSON)
+                                                      .content(objectMapper.writeValueAsString(request)))
+                                     .andExpect(status().isCreated())
+                                     .andReturn();
+
+        String json = mvcResult.getResponse().getContentAsString();
+
+        OrderResponse actual = objectMapper.readValue(json, OrderResponse.class);
+
+        assertEquals(response, actual, "Response is not correct!");
     }
 
     @Test
     public void shouldUpdateStatus() throws Exception {
         User user = UserTestFactory.createUser();
         Order order = OrderTestFactory.createOrder(user);
-        order.setId(1L);
 
-        doAnswer(invocation -> {
-            order.setOrderStatus(OrderStatus.PAID);
-            return order;
-        }).when(orderService).changeOrderStatus(1L, OrderStatus.PAID);
+        OrderStatusUpdateRequest request = new OrderStatusUpdateRequest(OrderStatus.PAID);
 
-        mockMvc.perform(put("/order/1/status")
-                .with(csrf())
-                .with(user(user))
-                .param("status", "PAID")
-                .contentType(ContentType.JSON.getName()))
-                .andExpect(status().isOk());
+        OrderResponse response = OrderTestFactory.createResponse(order);
+
+        when(orderService.changeOrderStatus(eq(order.getId()), any(OrderStatusUpdateRequest.class))).thenReturn(
+                response);
+
+        MvcResult mvcResult = mockMvc.perform(patch(String.format("/order/%d/status", order.getId()))
+                                                      .with(csrf())
+                                                      .with(user(user))
+                                                      .contentType(MediaType.APPLICATION_JSON)
+                                                      .content(objectMapper.writeValueAsString(request)))
+                                     .andExpect(status().isOk())
+                                     .andReturn();
+
+        String json = mvcResult.getResponse().getContentAsString();
+
+        OrderResponse actual = objectMapper.readValue(json, OrderResponse.class);
+
+        assertEquals(response, actual, "Response is not correct!");
     }
 }

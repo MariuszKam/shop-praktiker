@@ -1,9 +1,10 @@
 package com.praktiker.shop.services;
 
+import com.praktiker.shop.dto.product.ProductResponse;
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.exceptions.ProductNotFoundException;
 import com.praktiker.shop.persistance.ProductRepository;
-import com.praktiker.shop.utilis.ProductTestFactory;
+import com.praktiker.shop.utilis.factories.ProductTestFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,23 +27,22 @@ public class ProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
-    @DisplayName("Part of testing getProductById(Long id) - positive case")
+    @DisplayName("Part of testing getProductById - positive case")
     @Test
     public void shouldGetProductById() {
         Product product = ProductTestFactory.createProduct();
-        product.setId(1L);
 
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
 
-        Product actual = productService.getProductById(1L);
+        ProductResponse actual = productService.getProductById(1L);
 
-        assertEquals(product.getId(), actual.getId(), "Product wrong ID!");
-        assertEquals(product.getName(), actual.getName(), "Product wrong name!");
-        assertEquals(product.getPrice(), actual.getPrice(), "Product wrong price!");
-        assertEquals(product.getProductType(), actual.getProductType(), "Product wrong Type!");
+        assertEquals(product.getId(), actual.id(), "Product wrong ID!");
+        assertEquals(product.getName(), actual.name(), "Product wrong name!");
+        assertEquals(product.getPrice(), actual.price(), "Product wrong price!");
+        assertEquals(product.getProductType().name(), actual.productType(), "Product wrong Type!");
     }
 
-    @DisplayName("Part of testing getProductById(Long id) - negative case")
+    @DisplayName("Part of testing getProductById - negative case")
     @Test
     public void shouldThrowProductNotFoundExceptionById() {
         Long notExist = 2L;
@@ -50,6 +50,6 @@ public class ProductServiceTest {
         when(productRepository.findById(notExist)).thenReturn(Optional.empty());
 
         assertThrows(ProductNotFoundException.class, () -> productService.getProductById(notExist),
-                "Should throw ProductNotFoundException for non existing ID");
+                     "Should throw ProductNotFoundException for non existing ID");
     }
 }

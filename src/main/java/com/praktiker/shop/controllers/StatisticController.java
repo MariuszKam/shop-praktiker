@@ -1,7 +1,7 @@
 package com.praktiker.shop.controllers;
 
-import com.praktiker.shop.entities.order.Order;
-import com.praktiker.shop.entities.product.Product;
+import com.praktiker.shop.dto.order.OrderResponse;
+import com.praktiker.shop.dto.product.ProductResponse;
 import com.praktiker.shop.services.statistics.OrderStatistics;
 import com.praktiker.shop.services.statistics.ProductStatistic;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +27,12 @@ public class StatisticController {
     }
 
     @GetMapping("/order/most-expensive")
-    public ResponseEntity<Order> getMostExpensive() {
+    public ResponseEntity<OrderResponse> getMostExpensive() {
         return ResponseEntity.ok(orderStatistics.getMostExpensive());
     }
 
     @GetMapping("/product/best-seller")
-    public ResponseEntity<Product> getBestSeller() {
+    public ResponseEntity<ProductResponse> getBestSeller() {
         return ResponseEntity.ok(productStatistic.getBestseller());
     }
 }

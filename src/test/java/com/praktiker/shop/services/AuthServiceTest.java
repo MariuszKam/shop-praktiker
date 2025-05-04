@@ -1,12 +1,15 @@
 package com.praktiker.shop.services;
 
+import com.praktiker.shop.dto.user.UserRegisterRequest;
+import com.praktiker.shop.dto.user.UserRegisterResponse;
 import com.praktiker.shop.entities.user.Role;
 import com.praktiker.shop.entities.user.User;
 import com.praktiker.shop.persistance.RoleRepository;
 import com.praktiker.shop.persistance.UserRepository;
-import com.praktiker.shop.utilis.UserTestFactory;
+import com.praktiker.shop.utilis.factories.UserTestFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -37,19 +40,29 @@ public class AuthServiceTest {
 
     @Test
     public void shouldRegisterUserWithEncodedPasswordAndDefaultRole() {
-        User user = UserTestFactory.createUser();
+        UserRegisterRequest request = UserTestFactory.createUserRequest();
 
         Role role = new Role();
         role.setName("ROLE_USER");
 
-        when(passwordEncoder.encode(user.getPassword())).thenReturn("hashed");
+        when(passwordEncoder.encode(request.getPassword())).thenReturn("hashed");
         when(roleRepository.findByName("ROLE_USER")).thenReturn(Optional.of(role));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        User registered = authService.register(user);
+        UserRegisterResponse response = authService.register(request);
 
-        assertEquals("hashed", registered.getPassword(), "Password is not hashed");
-        assertTrue(registered.getRoles().contains(role));
-        verify(userRepository).save(registered);
+        assertEquals(request.getUsername(), response.username(), "Username is different!");
+        assertEquals(request.getEmail(), response.email(), "Email is different!");
+        assertTrue(response.roles().contains(role.getName()), "Role is different!");
+
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userCaptor.capture());
+        User savedUser = userCaptor.getValue();
+
+        assertEquals("Adam", savedUser.getUsername(), "Username is different!");
+        assertEquals("hashed", savedUser.getPassword(), "Password is not encoded!");
+        assertEquals("adam@mail.com", savedUser.getEmail(), "Email is different!");
+        assertTrue(savedUser.getRoles().contains(role), "Role is different!");
+
     }
 }

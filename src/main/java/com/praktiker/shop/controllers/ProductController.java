@@ -1,6 +1,6 @@
 package com.praktiker.shop.controllers;
 
-import com.praktiker.shop.entities.product.Product;
+import com.praktiker.shop.dto.product.ProductResponse;
 import com.praktiker.shop.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long productId) {
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
         return ResponseEntity.ok(productService.getProductById(productId));
     }
 }

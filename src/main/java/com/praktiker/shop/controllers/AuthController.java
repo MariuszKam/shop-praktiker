@@ -1,8 +1,9 @@
 package com.praktiker.shop.controllers;
 
-import com.praktiker.shop.dto.UserRegisterRequest;
-import com.praktiker.shop.entities.user.User;
+import com.praktiker.shop.dto.user.UserRegisterRequest;
+import com.praktiker.shop.dto.user.UserRegisterResponse;
 import com.praktiker.shop.services.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +20,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserRegisterRequest> register(@RequestBody User user) {
-        User registered = authService.register(user);
-        UserRegisterRequest userRegisterRequest = new UserRegisterRequest
-                (registered.getId(),
-                registered.getUsername(),
-                registered.getEmail());
-        return ResponseEntity.status(HttpStatus.CREATED).body(userRegisterRequest);
+    public ResponseEntity<UserRegisterResponse> register(@Valid @RequestBody UserRegisterRequest request) {
+        UserRegisterResponse response = authService.register(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
