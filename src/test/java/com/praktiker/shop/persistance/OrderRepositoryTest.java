@@ -44,8 +44,10 @@ public class OrderRepositoryTest {
         List<Product> products = ProductTestFactory.createProductsForRepo();
         products.forEach(product -> testEntityManager.persist(product));
 
-        List<OrderItem> orderItems = OrderItemTestFactory.createOrderItemsForRepo(products);
-        orderItems.forEach(orderItem -> testEntityManager.persist(orderItem));
+        List<List<OrderItem>> orderItems = OrderItemTestFactory.createOrderItemsListsForRepo(products);
+        orderItems.stream()
+                  .flatMap(List::stream)
+                  .forEach(testEntityManager::persist);
 
         Payment payment = new Payment();
         payment.setAmount(BigDecimal.ZERO);
