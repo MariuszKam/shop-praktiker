@@ -3,11 +3,9 @@ package com.praktiker.shop.utilis.seeders;
 import com.praktiker.shop.entities.order.Order;
 import com.praktiker.shop.entities.order.OrderItem;
 import com.praktiker.shop.entities.order.Payment;
-import com.praktiker.shop.entities.order.PaymentMethod;
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.entities.user.Role;
 import com.praktiker.shop.entities.user.User;
-import com.praktiker.shop.exceptions.PaymentNotFoundException;
 import com.praktiker.shop.exceptions.RoleNotFoundException;
 import com.praktiker.shop.exceptions.UserNotFoundException;
 import com.praktiker.shop.persistance.*;
@@ -15,7 +13,6 @@ import com.praktiker.shop.utilis.factories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.test.context.TestComponent;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -29,15 +26,12 @@ public class TestDataSeeder {
 
     private final ProductRepository productRepository;
 
-    private final PaymentRepository paymentRepository;
-
     private final OrderRepository orderRepository;
 
     public void initializeDatabase() {
         seedRoles();
         seedUsers();
         seedProducts();
-        seedPayment();
         seedOrders();
     }
 
@@ -66,13 +60,6 @@ public class TestDataSeeder {
         productRepository.saveAll(products);
     }
 
-    private void seedPayment() {
-        Payment payment = new Payment();
-        payment.setAmount(BigDecimal.ZERO);
-        payment.setPaymentMethod(PaymentMethod.PAYPAL);
-        paymentRepository.save(payment);
-    }
-
     private void seedOrders() {
         List<Product> products = productRepository.findAll();
         List<List<OrderItem>> orderItemLists = OrderItemTestFactory.createOrderItemsListsForRepo(products);
@@ -80,10 +67,9 @@ public class TestDataSeeder {
         User user = userRepository.findByUsername("Adam")
                                   .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        Payment payment = paymentRepository.findById(1L)
-                                           .orElseThrow(() -> new PaymentNotFoundException("Payment not found"));
+        List<Payment> payments = PaymentTestFactory.createPaymentsForRepo();
 
-        List<Order> orders = OrderTestFactory.createOrdersForRepo(orderItemLists, user, payment);
+        List<Order> orders = OrderTestFactory.createOrdersForRepo(orderItemLists, user, payments);
 
         orderRepository.saveAll(orders);
     }

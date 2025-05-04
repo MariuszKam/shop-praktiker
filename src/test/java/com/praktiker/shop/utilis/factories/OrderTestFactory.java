@@ -59,10 +59,10 @@ public class OrderTestFactory {
         return createOrders(UserTestFactory.createUser());
     }
 
-    public static List<Order> createOrdersForRepo(List<List<OrderItem>> orderItems, User user, Payment payment) {
-        return List.of(createOrderForRepo(orderItems.getFirst(), OrderStatus.CREATED, user, payment),
-                       createOrderForRepo(orderItems.get(1), OrderStatus.CREATED, user, payment),
-                       createOrderForRepo(orderItems.get(2), OrderStatus.CREATED, user, payment));
+    public static List<Order> createOrdersForRepo(List<List<OrderItem>> orderItems, User user, List<Payment> payments) {
+        return List.of(createOrderForRepo(orderItems.getFirst(), OrderStatus.CREATED, user, payments.getFirst()),
+                       createOrderForRepo(orderItems.get(1), OrderStatus.CREATED, user, payments.get(1)),
+                       createOrderForRepo(orderItems.get(2), OrderStatus.CREATED, user, payments.get(2)));
     }
 
     /********************************* ORDERS RESPONSES *********************************/
