@@ -43,7 +43,7 @@ public class UserTestFactory {
     }
 
     public static UserRegisterRequest createUserRequest() {
-        return new UserRegisterRequest("Adam", "Password123", "adam@mail.com");
+        return createUserRequest("Adam", "Password123", "adam@mail.com");
     }
 
     /********************************* USER RESPONSES *********************************/
@@ -53,10 +53,6 @@ public class UserTestFactory {
     }
 
     public static UserRegisterResponse createUserResponse() {
-        return new UserRegisterResponse(
-                1L,
-                "Adam",
-                "adam@mail.com",
-                Set.of("ROLE_USER"));
+        return createUserResponse(1L, "Adam", "adam@mail.com", Set.of("ROLE_USER"));
     }
 }

@@ -3,14 +3,10 @@ package com.praktiker.shop.persistance;
 import com.praktiker.shop.entities.order.Order;
 import com.praktiker.shop.entities.order.OrderItem;
 import com.praktiker.shop.entities.order.Payment;
-import com.praktiker.shop.entities.order.PaymentMethod;
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.entities.user.Role;
 import com.praktiker.shop.entities.user.User;
-import com.praktiker.shop.utilis.factories.OrderItemTestFactory;
-import com.praktiker.shop.utilis.factories.OrderTestFactory;
-import com.praktiker.shop.utilis.factories.ProductTestFactory;
-import com.praktiker.shop.utilis.factories.UserTestFactory;
+import com.praktiker.shop.utilis.factories.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -44,16 +40,16 @@ public class OrderRepositoryTest {
         List<Product> products = ProductTestFactory.createProductsForRepo();
         products.forEach(product -> testEntityManager.persist(product));
 
-        List<OrderItem> orderItems = OrderItemTestFactory.createOrderItemsForRepo(products);
-        orderItems.forEach(orderItem -> testEntityManager.persist(orderItem));
+        List<List<OrderItem>> orderItems = OrderItemTestFactory.createOrderItemsListsForRepo(products);
+        orderItems.stream()
+                  .flatMap(List::stream)
+                  .forEach(testEntityManager::persist);
 
-        Payment payment = new Payment();
-        payment.setAmount(BigDecimal.ZERO);
-        payment.setPaymentMethod(PaymentMethod.PAYPAL);
+        List<Payment> payments = PaymentTestFactory.createPaymentsForRepo();
 
-        testEntityManager.persist(payment);
+        payments.forEach(payment -> testEntityManager.persist(payment));
 
-        List<Order> orders = OrderTestFactory.createOrdersForRepo(orderItems, user, payment);
+        List<Order> orders = OrderTestFactory.createOrdersForRepo(orderItems, user, payments);
         orders.forEach(order -> testEntityManager.persist(order));
 
         testEntityManager.flush();
@@ -74,9 +70,10 @@ public class OrderRepositoryTest {
 
         assertThat(found)
                 .extracting(Order::getPayment)
-                .allSatisfy(p -> {
-                    assertThat(p.getPaymentMethod()).isEqualTo(PaymentMethod.PAYPAL);
-                    assertThat(p.getAmount()).isEqualByComparingTo(BigDecimal.ZERO);
-                });
+                .containsExactlyElementsOf(
+                        orders.stream()
+                              .map(Order::getPayment)
+                              .toList()
+                );
     }
 }

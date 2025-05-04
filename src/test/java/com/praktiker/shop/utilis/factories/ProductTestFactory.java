@@ -19,6 +19,15 @@ public class ProductTestFactory {
         return product;
     }
 
+    public static Product createProductForRepo(String name, BigDecimal price, ProductType type) {
+        Product product = new Product();
+        product.setName(name);
+        product.setPrice(price);
+        product.setProductType(type);
+        product.setOrderItems(new ArrayList<>());
+        return product;
+    }
+
     public static Product createProduct() {
         return createProduct(1L, "Default Product", BigDecimal.valueOf(99.99), ProductType.ELECTRONICS);
     }
@@ -31,10 +40,9 @@ public class ProductTestFactory {
 
     public static List<Product> createProductsForRepo() {
         return List.of(
-                Product.builder().name("Laptop").price(BigDecimal.valueOf(2999.99)).productType(ProductType.ELECTRONICS)
-                       .build(),
-                Product.builder().name("T-shirt").price(BigDecimal.valueOf(49.99)).productType(ProductType.CLOTH)
-                       .build(),
-                Product.builder().name("Book").price(BigDecimal.valueOf(29.99)).productType(ProductType.BOOK).build());
+                createProductForRepo("Laptop", BigDecimal.valueOf(2999.99), ProductType.ELECTRONICS),
+                createProductForRepo("T-shirt", BigDecimal.valueOf(49.99), ProductType.CLOTH),
+                createProductForRepo("Book", BigDecimal.valueOf(29.99), ProductType.BOOK)
+        );
     }
 }

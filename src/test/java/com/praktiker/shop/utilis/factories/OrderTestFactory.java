@@ -3,10 +3,7 @@ package com.praktiker.shop.utilis.factories;
 import com.praktiker.shop.dto.order.OrderCreateRequest;
 import com.praktiker.shop.dto.order.OrderItemResponse;
 import com.praktiker.shop.dto.order.OrderResponse;
-import com.praktiker.shop.entities.order.Order;
-import com.praktiker.shop.entities.order.OrderItem;
-import com.praktiker.shop.entities.order.OrderStatus;
-import com.praktiker.shop.entities.order.Payment;
+import com.praktiker.shop.entities.order.*;
 import com.praktiker.shop.entities.user.User;
 import com.praktiker.shop.mappers.OrderItemMapper;
 import com.praktiker.shop.mappers.OrderMapper;
@@ -24,6 +21,15 @@ public class OrderTestFactory {
         order.setOrderItems(orderItems);
         order.setUser(user);
         order.setOrderStatus(orderStatus);
+        return order;
+    }
+
+    public static Order createOrderForRepo(List<OrderItem> orderItems, OrderStatus orderStatus, User user, Payment payment) {
+        Order order = new Order();
+        order.setOrderItems(orderItems);
+        order.setOrderStatus(orderStatus);
+        order.setUser(user);
+        order.setPayment(payment);
         return order;
     }
 
@@ -53,10 +59,10 @@ public class OrderTestFactory {
         return createOrders(UserTestFactory.createUser());
     }
 
-    public static List<Order> createOrdersForRepo(List<OrderItem> orderItems, User user, Payment payment) {
-        return List.of(
-                Order.builder().orderItems(orderItems).orderStatus(OrderStatus.CREATED).user(user).payment(payment)
-                     .build());
+    public static List<Order> createOrdersForRepo(List<List<OrderItem>> orderItems, User user, List<Payment> payments) {
+        return List.of(createOrderForRepo(orderItems.getFirst(), OrderStatus.CREATED, user, payments.getFirst()),
+                       createOrderForRepo(orderItems.get(1), OrderStatus.CREATED, user, payments.get(1)),
+                       createOrderForRepo(orderItems.get(2), OrderStatus.CREATED, user, payments.get(2)));
     }
 
     /********************************* ORDERS RESPONSES *********************************/

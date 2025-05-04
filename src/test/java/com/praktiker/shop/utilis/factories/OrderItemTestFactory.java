@@ -18,6 +18,13 @@ public class OrderItemTestFactory {
         return orderItem;
     }
 
+    public static OrderItem createOrderItemForRepo(BigDecimal quantity, Product product) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setQuantity(quantity);
+        orderItem.setProduct(product);
+        return orderItem;
+    }
+
     public static List<OrderItem> createOrderItemList(Long id, BigDecimal quantity, Product product) {
         return List.of(createOrderItem(id, quantity, product));
     }
@@ -36,9 +43,17 @@ public class OrderItemTestFactory {
     }
 
     public static List<OrderItem> createOrderItemsForRepo(List<Product> products) {
-        return List.of(OrderItem.builder().quantity(BigDecimal.ONE).product(products.getFirst()).build(),
-                       OrderItem.builder().quantity(BigDecimal.TWO).product(products.get(1)).build(),
-                       OrderItem.builder().quantity(BigDecimal.ONE).product(products.get(2)).build());
+        return List.of(
+                createOrderItemForRepo(BigDecimal.ONE, products.getFirst()),
+                createOrderItemForRepo(BigDecimal.TWO, products.get(1)),
+                createOrderItemForRepo(BigDecimal.ONE, products.get(2))
+        );
+    }
+
+    public static List<List<OrderItem>> createOrderItemsListsForRepo(List<Product> products) {
+        return List.of(createOrderItemsForRepo(products),
+                       createOrderItemsForRepo(products),
+                       createOrderItemsForRepo(products));
     }
 
 }
