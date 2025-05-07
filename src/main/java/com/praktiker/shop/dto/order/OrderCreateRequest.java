@@ -7,11 +7,12 @@ import lombok.Setter;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Setter
 @Getter
+@AllArgsConstructor
 public class OrderCreateRequest {
 
     @NotNull(message = "List of items cannot be null")
     private List<OrderItemRequest> items;
 }
+
