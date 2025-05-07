@@ -9,6 +9,8 @@ import com.praktiker.shop.persistance.ProductTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProductTypeService {
@@ -21,6 +23,12 @@ public class ProductTypeService {
                                                                "Product Type not found"));
 
         return ProductTypeMapper.toResponse(productType);
+    }
+
+    public List<ProductTypeResponse> getAllProductType() {
+        List<ProductType> productTypes = productTypeRepository.findAll();
+
+        return ProductTypeMapper.toResponse(productTypes);
     }
 
     public ProductTypeResponse addProductType(ProductTypeCreateRequest request) {

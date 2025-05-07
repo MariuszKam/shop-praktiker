@@ -10,6 +10,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Repository("/product-type")
 @RequiredArgsConstructor
@@ -20,6 +22,11 @@ public class ProductTypeController {
     @GetMapping("/{typeId}")
     public ResponseEntity<ProductTypeResponse> getProductType(@PathVariable Long id) {
         return ResponseEntity.ok(productTypeService.getProductType(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductTypeResponse>> getAllProductType() {
+        return ResponseEntity.ok(productTypeService.getAllProductType());
     }
 
     @PreAuthorize("hasRole('ADMIN')")

@@ -11,12 +11,14 @@ public class ProductMapper {
         return Product.builder()
                       .name(request.getName())
                       .price(request.getPrice())
+                      .unit(request.getUnit())
                       .productType(productType)
                       .build();
     }
 
     public static ProductResponse toResponse(Product product) {
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(),
+                                   product.getUnit().name(),
                                    product.getProductType().getName());
     }
 

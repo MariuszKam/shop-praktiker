@@ -12,5 +12,6 @@ public class ProductTypeCreateRequest {
 
     @NotBlank(message = "Name cannot be blank")
     private String name;
+
 }
 
