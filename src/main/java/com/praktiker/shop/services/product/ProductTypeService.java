@@ -1,11 +1,11 @@
-package com.praktiker.shop.services;
+package com.praktiker.shop.services.product;
 
 import com.praktiker.shop.dto.product.ProductTypeCreateRequest;
 import com.praktiker.shop.dto.product.ProductTypeResponse;
 import com.praktiker.shop.entities.product.ProductType;
 import com.praktiker.shop.exceptions.ProductTypeNotFoundException;
 import com.praktiker.shop.mappers.ProductTypeMapper;
-import com.praktiker.shop.persistance.ProductTypeRepository;
+import com.praktiker.shop.persistance.product.ProductTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

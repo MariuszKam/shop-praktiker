@@ -1,8 +1,8 @@
-package com.praktiker.shop.controllers;
+package com.praktiker.shop.controllers.product;
 
 import com.praktiker.shop.dto.product.ProductTypeCreateRequest;
 import com.praktiker.shop.dto.product.ProductTypeResponse;
-import com.praktiker.shop.services.ProductTypeService;
+import com.praktiker.shop.services.product.ProductTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Repository("/product-type")
+@Repository("/products/type")
 @RequiredArgsConstructor
 public class ProductTypeController {
 

@@ -14,7 +14,7 @@ import com.praktiker.shop.exceptions.UserNotFoundException;
 import com.praktiker.shop.mappers.OrderItemMapper;
 import com.praktiker.shop.mappers.OrderMapper;
 import com.praktiker.shop.persistance.OrderRepository;
-import com.praktiker.shop.persistance.ProductRepository;
+import com.praktiker.shop.persistance.product.ProductRepository;
 import com.praktiker.shop.persistance.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

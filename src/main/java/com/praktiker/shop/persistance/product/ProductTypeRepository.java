@@ -1,4 +1,4 @@
-package com.praktiker.shop.persistance;
+package com.praktiker.shop.persistance.product;
 
 import com.praktiker.shop.entities.product.ProductType;
 import org.springframework.data.jpa.repository.JpaRepository;

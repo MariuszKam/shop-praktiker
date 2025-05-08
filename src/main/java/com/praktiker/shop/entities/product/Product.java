@@ -1,6 +1,7 @@
 package com.praktiker.shop.entities.product;
 
 import com.praktiker.shop.entities.order.OrderItem;
+import com.praktiker.shop.entities.product.stock.ProductStock;
 import jakarta.persistence.*;
 import lombok.*;
 

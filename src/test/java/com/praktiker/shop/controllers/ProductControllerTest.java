@@ -2,10 +2,11 @@ package com.praktiker.shop.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.praktiker.shop.config.security.SecurityConfig;
+import com.praktiker.shop.controllers.product.ProductController;
 import com.praktiker.shop.dto.product.ProductResponse;
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.mappers.ProductMapper;
-import com.praktiker.shop.services.ProductService;
+import com.praktiker.shop.services.product.ProductService;
 import com.praktiker.shop.utilis.factories.ProductTestFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

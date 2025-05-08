@@ -1,5 +1,6 @@
-package com.praktiker.shop.entities.product;
+package com.praktiker.shop.entities.product.stock;
 
+import com.praktiker.shop.entities.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,4 +26,11 @@ public class ProductStock {
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal amount;
 
+    public void addAmount(BigDecimal amount) {
+        this.amount = this.amount.add(amount);
+    }
+
+    public void subtractAmount(BigDecimal amount) {
+        this.amount = this.amount.subtract(amount);
+    }
 }

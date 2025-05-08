@@ -9,6 +9,7 @@ import com.praktiker.shop.entities.user.User;
 import com.praktiker.shop.exceptions.RoleNotFoundException;
 import com.praktiker.shop.exceptions.UserNotFoundException;
 import com.praktiker.shop.persistance.*;
+import com.praktiker.shop.persistance.product.ProductRepository;
 import com.praktiker.shop.utilis.factories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.test.context.TestComponent;
