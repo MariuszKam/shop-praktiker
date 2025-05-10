@@ -24,18 +24,20 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final UserMapper userMapper;
+
     public UserRegisterResponse register(UserRegisterRequest request) {
         Role role = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RoleNotFoundException("Default role ROLE_USER not found!"));
+                                  .orElseThrow(() -> new RoleNotFoundException("Default role ROLE_USER not found!"));
 
-        User user = UserMapper.toEntity(
+        User user = userMapper.toEntity(
                 request,
                 passwordEncoder.encode(request.getPassword()),
                 Set.of(role));
 
         User registered = userRepository.save(user);
 
-        return UserMapper.toResponse(registered);
+        return userMapper.toResponse(registered);
     }
 
 }

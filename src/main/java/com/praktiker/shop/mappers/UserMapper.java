@@ -4,26 +4,27 @@ import com.praktiker.shop.dto.user.UserRegisterRequest;
 import com.praktiker.shop.dto.user.UserRegisterResponse;
 import com.praktiker.shop.entities.user.Role;
 import com.praktiker.shop.entities.user.User;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class UserMapper {
+@Mapper(componentModel = "spring")
+public interface UserMapper {
 
-    public static User toEntity(UserRegisterRequest request, String password, Set<Role> roles) {
-        return User.builder()
-                   .username(request.getUsername())
-                   .password(password)
-                   .email(request.getEmail())
-                   .roles(roles)
-                   .build();
-    }
+    @Mapping(target = "password", source = "password")
+    @Mapping(target = "roles", source = "roles")
+    User toEntity(UserRegisterRequest request, String password, Set<Role> roles);
 
-    public static UserRegisterResponse toResponse(User user) {
-        return new UserRegisterResponse(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getRoles().stream().map(Role::getName).collect(Collectors.toSet()));
+    @Mapping(target = "roles", source = "roles", qualifiedByName = "rolesToNames")
+    UserRegisterResponse toResponse(User user);
+
+    @Named("rolesToNames")
+    static Set<String> mapRolesToNames(Set<Role> roles) {
+        return roles.stream()
+                    .map(Role::getName)
+                    .collect(Collectors.toSet());
     }
 }
