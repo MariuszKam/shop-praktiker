@@ -30,9 +30,8 @@ public class ProductStockController {
     }
 
     @PatchMapping("/{productId}")
-    public ResponseEntity<ProductStockResponse> addProductStock(
-            @PathVariable Long productId,
-            @RequestBody @Valid ProductStockRequest request
+    public ResponseEntity<ProductStockResponse> addProductStock(@PathVariable Long productId,
+                                                                @RequestBody @Valid ProductStockRequest request
     ) {
         if (!productId.equals(request.getProductId())) {
             return ResponseEntity.badRequest().build();

@@ -24,8 +24,15 @@ public class ProductController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ProductResponse> addProduct(@RequestBody @Valid ProductCreateRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.addProduct(request));
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody @Valid ProductCreateRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(request));
+    }
+
+    @PatchMapping("/{productId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long productId,
+                                                         @RequestBody @Valid ProductCreateRequest request) {
+        return ResponseEntity.ok(productService.updateProduct(productId, request));
     }
 
     @DeleteMapping("/{productId}")
