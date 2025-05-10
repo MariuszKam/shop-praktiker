@@ -21,6 +21,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,7 +68,16 @@ public class OrderService {
 
         List<Product> products = productRepository.findAllById(productIds);
 
-        List<OrderItem> items = orderItemMapper.toEntities(request.getItems(), products, order);
+        Map<Long, Product> productMap = products.stream()
+                                                .collect(Collectors.toMap(Product::getId, Function.identity()));
+
+
+        List<OrderItem> items = request.getItems().stream()
+                                       .map(item -> orderItemMapper.toEntity(
+                                               item,
+                                               productMap.get(item.getProductId()),
+                                               order
+                                       )).toList();
 
         order.setOrderItems(items);
 

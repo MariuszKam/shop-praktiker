@@ -13,11 +13,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface OrderItemMapper {
 
-    @Mapping(target = "product", source = "product")
-    @Mapping(target = "order", source = "order")
+    @Mapping(target = "id", ignore = true)
     OrderItem toEntity(OrderItemRequest request, Product product, Order order);
-
-    List<OrderItem> toEntities(List<OrderItemRequest> requests, List<Product> products, Order order);
 
     @Mapping(target = "productId", source = "product.id")
     @Mapping(target = "productName", source = "product.name")

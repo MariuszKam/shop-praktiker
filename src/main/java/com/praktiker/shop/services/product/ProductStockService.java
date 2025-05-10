@@ -17,19 +17,21 @@ public class ProductStockService {
 
     private final ProductStockRepository productStockRepository;
 
+    private final ProductStockMapper productStockMapper;
+
     public ProductStockResponse getProductStock(Long id) {
         ProductStock productStock = productStockRepository.findById(id)
                                                           .orElseThrow(() -> new ProductStockNotFoundException(
                                                                   "Product Stock not found"
                                                           ));
 
-        return ProductStockMapper.toResponse(productStock);
+        return productStockMapper.toResponse(productStock);
     }
 
     public List<ProductStockResponse> getAllProductStock() {
         List<ProductStock> productStocks = productStockRepository.findAll();
 
-        return ProductStockMapper.toResponse(productStocks);
+        return productStockMapper.toResponse(productStocks);
     }
 
     public ProductStockResponse addAmountToStock(ProductStockRequest request) {
@@ -41,7 +43,7 @@ public class ProductStockService {
 
         productStockRepository.save(productStock);
 
-        return ProductStockMapper.toResponse(productStock);
+        return productStockMapper.toResponse(productStock);
     }
 
 }
