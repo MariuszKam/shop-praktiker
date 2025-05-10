@@ -37,7 +37,7 @@ public class TestDataSeeder {
     }
 
     private void seedRoles() {
-        Set<Role> roles = RoleTestFactories.roles();
+        Set<Role> roles = RoleTestFactory.roles();
         roleRepository.saveAll(roles);
     }
 
