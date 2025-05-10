@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Repository("/products/type")
+@RequestMapping("/products/type")
 @RequiredArgsConstructor
 public class ProductTypeController {
 
