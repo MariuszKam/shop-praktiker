@@ -1,31 +1,25 @@
 package com.praktiker.shop.mappers;
 
-import com.praktiker.shop.dto.order.OrderCreateRequest;
 import com.praktiker.shop.dto.order.OrderResponse;
 import com.praktiker.shop.entities.order.Order;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-public class OrderMapper {
+@Mapper(componentModel = "spring", uses = OrderItemMapper.class)
+public interface OrderMapper {
 
-    /********************************* ORDERS RESPONSE *********************************/
+    @Mapping(target = "username", source = "user.username")
+    @Mapping(target = "totalAmount", source = "order", qualifiedByName = "calculateTotal")
+    OrderResponse toResponse(Order order);
 
-    public static OrderResponse toResponse(Order order) {
-        return new OrderResponse(
-                order.getId(),
-                order.getUser().getUsername(),
-                order.getTotalPrice(),
-                order.getOrderStatus().name(),
-                OrderItemMapper.toResponse(order.getOrderItems()));
-    }
+    List<OrderResponse> toResponse(List<Order> orders);
 
-    public static List<OrderResponse> toResponse(List<Order> orders) {
-        return orders.stream().map(OrderMapper::toResponse).toList();
-    }
-
-    /********************************* ORDERS REQUESTS *********************************/
-
-    public static OrderCreateRequest toRequest(Order order) {
-        return new OrderCreateRequest(OrderItemMapper.toRequests(order.getOrderItems()));
+    @Named("calculateTotal")
+    static BigDecimal getTotal(Order order) {
+        return order.getTotalPrice();
     }
 }
