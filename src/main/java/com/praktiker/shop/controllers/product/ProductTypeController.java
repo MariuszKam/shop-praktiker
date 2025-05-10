@@ -41,4 +41,11 @@ public class ProductTypeController {
                                                           @RequestBody @Valid ProductTypeCreateRequest request) {
         return ResponseEntity.ok(productTypeService.updateProductType(typeId, request));
     }
+
+    @DeleteMapping("/{typeId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteProductType(@PathVariable Long typeId) {
+        productTypeService.deleteProductType(typeId);
+        return ResponseEntity.noContent().build();
+    }
 }
