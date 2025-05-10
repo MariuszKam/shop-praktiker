@@ -11,7 +11,7 @@ import com.praktiker.shop.entities.user.User;
 import com.praktiker.shop.exceptions.OrderNotFoundException;
 import com.praktiker.shop.mappers.OrderItemMapper;
 import com.praktiker.shop.persistance.OrderRepository;
-import com.praktiker.shop.persistance.ProductRepository;
+import com.praktiker.shop.persistance.product.ProductRepository;
 import com.praktiker.shop.persistance.UserRepository;
 import com.praktiker.shop.utilis.factories.OrderTestFactory;
 import com.praktiker.shop.utilis.factories.UserTestFactory;

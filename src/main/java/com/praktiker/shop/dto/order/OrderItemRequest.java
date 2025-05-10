@@ -8,9 +8,9 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@AllArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
 public class OrderItemRequest {
 
     @NotNull(message = "Product ID cannot be null")

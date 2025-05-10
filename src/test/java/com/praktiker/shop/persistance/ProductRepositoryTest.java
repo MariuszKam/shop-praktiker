@@ -2,6 +2,7 @@ package com.praktiker.shop.persistance;
 
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.entities.product.ProductType;
+import com.praktiker.shop.persistance.product.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

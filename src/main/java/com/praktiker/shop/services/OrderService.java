@@ -1,6 +1,7 @@
 package com.praktiker.shop.services;
 
 import com.praktiker.shop.dto.order.OrderCreateRequest;
+import com.praktiker.shop.dto.order.OrderItemRequest;
 import com.praktiker.shop.dto.order.OrderResponse;
 import com.praktiker.shop.dto.order.OrderStatusUpdateRequest;
 import com.praktiker.shop.entities.order.Order;
@@ -12,9 +13,8 @@ import com.praktiker.shop.exceptions.OrderNotFoundException;
 import com.praktiker.shop.exceptions.UserNotFoundException;
 import com.praktiker.shop.mappers.OrderItemMapper;
 import com.praktiker.shop.mappers.OrderMapper;
-import com.praktiker.shop.mappers.ProductMapper;
 import com.praktiker.shop.persistance.OrderRepository;
-import com.praktiker.shop.persistance.ProductRepository;
+import com.praktiker.shop.persistance.product.ProductRepository;
 import com.praktiker.shop.persistance.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,7 +54,12 @@ public class OrderService {
                            .user(user)
                            .build();
 
-        List<Product> products = productRepository.findAllById(ProductMapper.toProductsId(request.getItems()));
+        List<Long> productIds = request.getItems()
+                                       .stream()
+                                       .map(OrderItemRequest::getProductId)
+                                       .toList();
+
+        List<Product> products = productRepository.findAllById(productIds);
 
         List<OrderItem> items = OrderItemMapper.toEntities(request.getItems(), products, order);
 
