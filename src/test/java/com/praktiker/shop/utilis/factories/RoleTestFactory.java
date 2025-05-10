@@ -4,7 +4,7 @@ import com.praktiker.shop.entities.user.Role;
 
 import java.util.Set;
 
-public class RoleTestFactories {
+public class RoleTestFactory {
 
     public static Role creatRole(String name) {
         Role role = new Role();
