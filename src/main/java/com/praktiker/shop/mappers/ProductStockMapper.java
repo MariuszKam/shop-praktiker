@@ -4,23 +4,22 @@ import com.praktiker.shop.dto.product.ProductCreateRequest;
 import com.praktiker.shop.dto.product.stock.ProductStockResponse;
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.entities.product.stock.ProductStock;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
-public class ProductStockMapper {
+@Mapper(componentModel = "spring")
+public interface ProductStockMapper {
 
-    public static ProductStock toEntity(Product product, ProductCreateRequest request) {
-        return ProductStock.builder().product(product).amount(request.getAmount()).build();
-    }
+    @Mapping(target = "product", source = "product")
+    @Mapping(target = "amount", source = "request.amount")
+    ProductStock toEntity(Product product, ProductCreateRequest request);
 
-    public static ProductStockResponse toResponse(ProductStock productStock) {
-        return new ProductStockResponse(productStock.getProduct().getName(),
-                                        productStock.getProduct().getUnit(),
-                                        productStock.getProduct().getProductType().getName(),
-                                        productStock.getAmount());
-    }
+    @Mapping(target = "name", source = "product.name")
+    @Mapping(target = "unit", source = "product.unit")
+    @Mapping(target = "productType", source = "product.productType.name")
+    ProductStockResponse toResponse(ProductStock productStock);
 
-    public static List<ProductStockResponse> toResponse(List<ProductStock> productStocks) {
-        return productStocks.stream().map(ProductStockMapper::toResponse).toList();
-    }
+    List<ProductStockResponse> toResponse(List<ProductStock> productStocks);
 }

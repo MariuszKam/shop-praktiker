@@ -17,25 +17,27 @@ public class ProductTypeService {
 
     private final ProductTypeRepository productTypeRepository;
 
+    private final ProductTypeMapper productTypeMapper;
+
     public ProductTypeResponse getProductType(Long id) {
         ProductType productType = productTypeRepository.findById(id)
                                                        .orElseThrow(() -> new ProductTypeNotFoundException(
                                                                "Product Type not found"));
 
-        return ProductTypeMapper.toResponse(productType);
+        return productTypeMapper.toResponse(productType);
     }
 
     public List<ProductTypeResponse> getAllProductType() {
         List<ProductType> productTypes = productTypeRepository.findAll();
 
-        return ProductTypeMapper.toResponse(productTypes);
+        return productTypeMapper.toResponse(productTypes);
     }
 
     public ProductTypeResponse addProductType(ProductTypeCreateRequest request) {
-        ProductType productType = ProductTypeMapper.toEntity(request);
+        ProductType productType = productTypeMapper.toEntity(request);
 
         productTypeRepository.save(productType);
 
-        return ProductTypeMapper.toResponse(productType);
+        return productTypeMapper.toResponse(productType);
     }
 }

@@ -22,13 +22,17 @@ public class ProductService {
 
     private final ProductTypeRepository productTypeRepository;
 
+    private final ProductMapper productMapper;
+
+    private final ProductStockMapper productStockMapper;
+
     public ProductResponse getProductById(Long id) {
         Product product = productRepository.findById(id)
                                            .orElseThrow(() -> new ProductNotFoundException(
                                                    "Product with id: " + id + "does not exists"
                                            ));
 
-        return ProductMapper.toResponse(product);
+        return productMapper.toResponse(product);
     }
 
     public ProductResponse addProduct(ProductCreateRequest request) {
@@ -37,15 +41,15 @@ public class ProductService {
                                                                "Product Type id: " + request.getProductTypeId() + "does not exists"
                                                        ));
 
-        Product product = ProductMapper.toEntity(request, productType);
+        Product product = productMapper.toEntity(request, productType);
 
-        ProductStock productStock = ProductStockMapper.toEntity(product, request);
+        ProductStock productStock = productStockMapper.toEntity(product, request);
 
         product.setStock(productStock);
 
         productRepository.save(product);
 
-        return ProductMapper.toResponse(product);
+        return productMapper.toResponse(product);
     }
 
     public void deleteProduct(Long productId) {

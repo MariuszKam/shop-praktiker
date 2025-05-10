@@ -4,22 +4,17 @@ import com.praktiker.shop.dto.product.ProductCreateRequest;
 import com.praktiker.shop.dto.product.ProductResponse;
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.entities.product.ProductType;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-public class ProductMapper {
+@Mapper(componentModel = "spring")
+public interface ProductMapper {
 
-    public static Product toEntity(ProductCreateRequest request, ProductType productType) {
-        return Product.builder()
-                      .name(request.getName())
-                      .price(request.getPrice())
-                      .unit(request.getUnit())
-                      .productType(productType)
-                      .build();
-    }
+    @Mapping(target = "productType", source = "productType")
+    @Mapping(target = "stock", ignore = true) // bo tworzony osobno
+    @Mapping(target = "orderItems", ignore = true)
+    Product toEntity(ProductCreateRequest request, ProductType productType);
 
-    public static ProductResponse toResponse(Product product) {
-        return new ProductResponse(product.getId(), product.getName(), product.getPrice(),
-                                   product.getUnit().name(),
-                                   product.getProductType().getName());
-    }
-
+    @Mapping(target = "productType", source = "productType.name")
+    ProductResponse toResponse(Product product);
 }
