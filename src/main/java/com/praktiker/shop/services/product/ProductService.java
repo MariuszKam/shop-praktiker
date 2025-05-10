@@ -33,7 +33,7 @@ public class ProductService {
     public ProductResponse getProductById(Long id) {
         Product product = productRepository.findById(id)
                                            .orElseThrow(() -> new ProductNotFoundException(
-                                                   "Product with id: " + id + " does not exists"
+                                                   "Product with id: " + id + " does not exist"
                                            ));
 
         return productMapper.toResponse(product);
@@ -42,7 +42,7 @@ public class ProductService {
     public ProductResponse createProduct(ProductCreateRequest request) {
         ProductType productType = productTypeRepository.findById(request.getProductTypeId())
                                                        .orElseThrow(() -> new ProductTypeNotFoundException(
-                                                               "Product Type id: " + request.getProductTypeId() + " does not exists"
+                                                               "Product Type id: " + request.getProductTypeId() + " does not exist"
                                                        ));
 
         Product product = productMapper.toEntity(request, productType);
@@ -58,7 +58,7 @@ public class ProductService {
     public ProductResponse updateProduct(Long productId, ProductCreateRequest request) {
         Product product = productRepository.findById(productId)
                                            .orElseThrow(() -> new ProductNotFoundException(
-                                                   "Product with id: " + productId + " does not exists"
+                                                   "Product with id: " + productId + " does not exist"
                                            ));
 
         product.setName(request.getName());
@@ -66,7 +66,7 @@ public class ProductService {
         product.setUnit(request.getUnit());
         ProductType productType = productTypeRepository.findById(request.getProductTypeId())
                                                        .orElseThrow(() -> new ProductTypeNotFoundException(
-                                                               "Product Type id: " + request.getProductTypeId() + " does not exists"
+                                                               "Product Type id: " + request.getProductTypeId() + " does not exist"
                                                        ));
 
         product.setProductType(productType);
@@ -77,7 +77,7 @@ public class ProductService {
     public void deleteProduct(Long productId) {
         Product product = productRepository.findById(productId)
                                            .orElseThrow(() -> new ProductNotFoundException(
-                                                   "Product with id: " + productId + " does not exists"
+                                                   "Product with id: " + productId + " does not exist"
                                            ));
 
         productStockRepository.findById(productId).ifPresent(productStockRepository::delete);
