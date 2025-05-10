@@ -12,7 +12,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ProductStockMapper {
 
-    @Mapping(target = "product", source = "product")
     @Mapping(target = "amount", source = "request.amount")
     ProductStock toEntity(Product product, ProductCreateRequest request);
 

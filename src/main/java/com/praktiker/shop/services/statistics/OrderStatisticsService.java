@@ -15,9 +15,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class OrderStatistics {
+public class OrderStatisticsService {
 
     private final OrderRepository orderRepository;
+
+    private final OrderMapper orderMapper;
 
     public BigDecimal getAverageOrderSum() {
         List<Order> orders = orderRepository.findAll();
@@ -39,6 +41,6 @@ public class OrderStatistics {
                                      .orElseThrow(() -> new OrderNotFoundException(
                                              "Could not find most expensive order. Order list is empty"));
 
-        return OrderMapper.toResponse(order);
+        return orderMapper.toResponse(order);
     }
 }

@@ -17,9 +17,11 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ProductStatistic {
+public class ProductStatisticService {
 
     private final OrderRepository orderRepository;
+
+    private final ProductMapper productMapper;
 
     public ProductResponse getBestseller() {
         List<Order> orders = orderRepository.findAll();
@@ -44,6 +46,6 @@ public class ProductStatistic {
                                 .orElseThrow(() -> new OrderNotFoundException(
                                         "Could not find any product during bestseller calculation"));
 
-        return ProductMapper.toResponse(product);
+        return productMapper.toResponse(product);
     }
 }

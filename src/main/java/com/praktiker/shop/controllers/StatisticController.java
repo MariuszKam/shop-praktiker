@@ -2,8 +2,8 @@ package com.praktiker.shop.controllers;
 
 import com.praktiker.shop.dto.order.OrderResponse;
 import com.praktiker.shop.dto.product.ProductResponse;
-import com.praktiker.shop.services.statistics.OrderStatistics;
-import com.praktiker.shop.services.statistics.ProductStatistic;
+import com.praktiker.shop.services.statistics.OrderStatisticsService;
+import com.praktiker.shop.services.statistics.ProductStatisticService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,22 +17,22 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class StatisticController {
 
-    private final OrderStatistics orderStatistics;
+    private final OrderStatisticsService orderStatisticsService;
 
-    private final ProductStatistic productStatistic;
+    private final ProductStatisticService productStatisticService;
 
     @GetMapping("/order/average")
     public ResponseEntity<BigDecimal> getAverageOrder() {
-        return ResponseEntity.ok(orderStatistics.getAverageOrderSum());
+        return ResponseEntity.ok(orderStatisticsService.getAverageOrderSum());
     }
 
     @GetMapping("/order/most-expensive")
     public ResponseEntity<OrderResponse> getMostExpensive() {
-        return ResponseEntity.ok(orderStatistics.getMostExpensive());
+        return ResponseEntity.ok(orderStatisticsService.getMostExpensive());
     }
 
     @GetMapping("/product/best-seller")
     public ResponseEntity<ProductResponse> getBestSeller() {
-        return ResponseEntity.ok(productStatistic.getBestseller());
+        return ResponseEntity.ok(productStatisticService.getBestseller());
     }
 }
