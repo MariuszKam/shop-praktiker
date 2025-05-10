@@ -1,6 +1,7 @@
 package com.praktiker.shop.persistance.product;
 
 import com.praktiker.shop.entities.product.Product;
+import com.praktiker.shop.entities.product.ProductType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByName(String name);
 
     List<Product> findAllByProductType_Name(String name);
+
+    boolean existsByProductType(ProductType type);
 }
