@@ -27,17 +27,14 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Payment payment;
 
     public BigDecimal getTotalPrice() {
         return orderItems.stream()
-                .map(item -> item.getProduct().getPrice().multiply(item.getQuantity()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                         .map(item -> item.getProduct().getPrice().multiply(item.getQuantity()))
+                         .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 }

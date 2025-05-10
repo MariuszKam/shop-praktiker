@@ -10,6 +10,7 @@ import com.praktiker.shop.entities.order.OrderStatus;
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.entities.user.User;
 import com.praktiker.shop.exceptions.OrderNotFoundException;
+import com.praktiker.shop.exceptions.ProductNotFoundException;
 import com.praktiker.shop.exceptions.UserNotFoundException;
 import com.praktiker.shop.mappers.OrderItemMapper;
 import com.praktiker.shop.mappers.OrderMapper;
@@ -19,6 +20,7 @@ import com.praktiker.shop.persistance.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -52,6 +54,7 @@ public class OrderService {
         return orderMapper.toResponse(orderRepository.findAllByUser_Username(username));
     }
 
+    @Transactional
     public OrderResponse createOrder(OrderCreateRequest request, String username) {
         User user = userRepository.findByUsername(username)
                                   .orElseThrow(() -> new UserNotFoundException("Username do not fit to any User"));
@@ -67,6 +70,10 @@ public class OrderService {
                                        .toList();
 
         List<Product> products = productRepository.findAllById(productIds);
+
+        if (products.size() != productIds.size()) {
+            throw new ProductNotFoundException("One or more products do not exist");
+        }
 
         Map<Long, Product> productMap = products.stream()
                                                 .collect(Collectors.toMap(Product::getId, Function.identity()));
@@ -86,6 +93,7 @@ public class OrderService {
         return orderMapper.toResponse(order);
     }
 
+    @Transactional
     public OrderResponse changeOrderStatus(Long orderId, OrderStatusUpdateRequest request) {
         Order order = orderRepository.findById(orderId)
                                      .orElseThrow(

@@ -10,6 +10,7 @@ import com.praktiker.shop.exceptions.ProductTypeNotFoundException;
 import com.praktiker.shop.mappers.ProductMapper;
 import com.praktiker.shop.mappers.ProductStockMapper;
 import com.praktiker.shop.persistance.product.ProductRepository;
+import com.praktiker.shop.persistance.product.ProductStockRepository;
 import com.praktiker.shop.persistance.product.ProductTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     private final ProductTypeRepository productTypeRepository;
+
+    private final ProductStockRepository productStockRepository;
 
     private final ProductMapper productMapper;
 
@@ -42,12 +45,10 @@ public class ProductService {
                                                        ));
 
         Product product = productMapper.toEntity(request, productType);
+        productRepository.save(product);
 
         ProductStock productStock = productStockMapper.toEntity(product, request);
-
-        product.setStock(productStock);
-
-        productRepository.save(product);
+        productStockRepository.save(productStock);
 
         return productMapper.toResponse(product);
     }
@@ -57,6 +58,8 @@ public class ProductService {
                                            .orElseThrow(() -> new ProductNotFoundException(
                                                    "Product with id: " + productId + "does not exists"
                                            ));
+
+        productStockRepository.findById(productId).ifPresent(productStockRepository::delete);
 
         productRepository.delete(product);
     }

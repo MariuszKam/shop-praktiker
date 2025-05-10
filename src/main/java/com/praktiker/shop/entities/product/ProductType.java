@@ -3,8 +3,6 @@ package com.praktiker.shop.entities.product;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "product_types")
 @Getter
@@ -20,8 +18,5 @@ public class ProductType {
 
     @Column(nullable = false, unique = true)
     private String name;
-
-    @OneToMany(mappedBy = "productType", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Product> products;
 
 }
