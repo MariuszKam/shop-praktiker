@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    @Mapping(target = "password", source = "password")
+    @Mapping(target = "password", source = "encodedPassword")
     @Mapping(target = "roles", source = "roles")
-    User toEntity(UserRegisterRequest request, String password, Set<Role> roles);
+    User toEntity(UserRegisterRequest request, String encodedPassword, Set<Role> roles);
 
     @Mapping(target = "roles", source = "roles", qualifiedByName = "rolesToNames")
     UserRegisterResponse toResponse(User user);

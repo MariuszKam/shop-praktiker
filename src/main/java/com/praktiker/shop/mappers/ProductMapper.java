@@ -11,7 +11,7 @@ import org.mapstruct.Mapping;
 public interface ProductMapper {
 
     @Mapping(target = "productType", source = "productType")
-    @Mapping(target = "stock", ignore = true) // bo tworzony osobno
+    @Mapping(target = "stock", ignore = true)
     @Mapping(target = "orderItems", ignore = true)
     Product toEntity(ProductCreateRequest request, ProductType productType);
 

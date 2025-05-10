@@ -32,17 +32,21 @@ public class OrderService {
 
     private final UserRepository userRepository;
 
+    private final OrderMapper orderMapper;
+
+    private final OrderItemMapper orderItemMapper;
+
     @PreAuthorize("@orderSecurity.isOwner(#id, authentication.name)")
     public OrderResponse getOrderById(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(() ->
                                                                        new OrderNotFoundException(
                                                                                "Order with id: " + id + "not found"));
 
-        return OrderMapper.toResponse(order);
+        return orderMapper.toResponse(order);
     }
 
     public List<OrderResponse> getOrdersByUsername(String username) {
-        return OrderMapper.toResponse(orderRepository.findAllByUser_Username(username));
+        return orderMapper.toResponse(orderRepository.findAllByUser_Username(username));
     }
 
     public OrderResponse createOrder(OrderCreateRequest request, String username) {
@@ -61,13 +65,13 @@ public class OrderService {
 
         List<Product> products = productRepository.findAllById(productIds);
 
-        List<OrderItem> items = OrderItemMapper.toEntities(request.getItems(), products, order);
+        List<OrderItem> items = orderItemMapper.toEntities(request.getItems(), products, order);
 
         order.setOrderItems(items);
 
         orderRepository.save(order);
 
-        return OrderMapper.toResponse(order);
+        return orderMapper.toResponse(order);
     }
 
     public OrderResponse changeOrderStatus(Long orderId, OrderStatusUpdateRequest request) {
@@ -84,6 +88,6 @@ public class OrderService {
 
         orderRepository.save(order);
 
-        return OrderMapper.toResponse(order);
+        return orderMapper.toResponse(order);
     }
 }
