@@ -40,4 +40,15 @@ public class ProductTypeService {
 
         return productTypeMapper.toResponse(productType);
     }
+
+    public ProductTypeResponse updateProductType(Long typeId, ProductTypeCreateRequest request) {
+        ProductType productType = productTypeRepository.findById(typeId)
+                                                       .orElseThrow(() -> new ProductTypeNotFoundException(
+                                                               "Product Type not found"
+                                                       ));
+        productType.setName(request.getName());
+        productTypeRepository.save(productType);
+
+        return productTypeMapper.toResponse(productType);
+    }
 }
