@@ -31,9 +31,6 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Payment payment;
-
     public BigDecimal getTotalPrice() {
         return orderItems.stream()
                          .map(item -> item.getProduct().getPrice().multiply(item.getQuantity()))
