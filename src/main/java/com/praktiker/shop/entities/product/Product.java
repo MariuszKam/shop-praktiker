@@ -1,11 +1,9 @@
 package com.praktiker.shop.entities.product;
 
-import com.praktiker.shop.entities.order.OrderItem;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -33,8 +31,5 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_type_id", nullable = false)
     private ProductType productType;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems;
 
 }
