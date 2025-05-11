@@ -4,9 +4,9 @@ import com.praktiker.shop.dto.product.ProductResponse;
 import com.praktiker.shop.entities.order.Order;
 import com.praktiker.shop.entities.order.OrderItem;
 import com.praktiker.shop.entities.product.Product;
-import com.praktiker.shop.exceptions.OrderNotFoundException;
-import com.praktiker.shop.mappers.ProductMapper;
-import com.praktiker.shop.persistance.OrderRepository;
+import com.praktiker.shop.exceptions.order.OrderNotFoundException;
+import com.praktiker.shop.mappers.product.ProductMapper;
+import com.praktiker.shop.persistance.order.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

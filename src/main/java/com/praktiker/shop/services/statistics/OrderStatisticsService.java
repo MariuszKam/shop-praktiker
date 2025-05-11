@@ -2,9 +2,9 @@ package com.praktiker.shop.services.statistics;
 
 import com.praktiker.shop.dto.order.OrderResponse;
 import com.praktiker.shop.entities.order.Order;
-import com.praktiker.shop.exceptions.OrderNotFoundException;
-import com.praktiker.shop.mappers.OrderMapper;
-import com.praktiker.shop.persistance.OrderRepository;
+import com.praktiker.shop.exceptions.order.OrderNotFoundException;
+import com.praktiker.shop.mappers.order.OrderMapper;
+import com.praktiker.shop.persistance.order.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

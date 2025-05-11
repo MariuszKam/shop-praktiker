@@ -1,6 +1,6 @@
 package com.praktiker.shop.config.security;
 
-import com.praktiker.shop.persistance.OrderRepository;
+import com.praktiker.shop.persistance.order.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ public class OrderSecurity {
 
     public boolean isOwner(Long orderId, String username) {
         return orderRepository.findById(orderId)
-                .map(order -> order.getUser().getUsername().equals(username))
-                .orElse(false);
+                              .map(order -> order.getUser().getUsername().equals(username))
+                              .orElse(false);
     }
 }
