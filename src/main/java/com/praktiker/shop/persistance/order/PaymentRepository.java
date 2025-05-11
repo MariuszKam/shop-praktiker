@@ -1,4 +1,4 @@
-package com.praktiker.shop.persistance;
+package com.praktiker.shop.persistance.order;
 
 import com.praktiker.shop.entities.order.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;

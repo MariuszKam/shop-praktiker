@@ -1,4 +1,4 @@
-package com.praktiker.shop.exceptions;
+package com.praktiker.shop.exceptions.order;
 
 
 public class OrderNotFoundException extends RuntimeException {

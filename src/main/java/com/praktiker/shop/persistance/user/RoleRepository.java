@@ -1,4 +1,4 @@
-package com.praktiker.shop.persistance;
+package com.praktiker.shop.persistance.user;
 
 import com.praktiker.shop.entities.user.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

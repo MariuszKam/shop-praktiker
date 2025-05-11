@@ -1,4 +1,4 @@
-package com.praktiker.shop.exceptions;
+package com.praktiker.shop.exceptions.user;
 
 public class RoleNotFoundException extends RuntimeException {
 

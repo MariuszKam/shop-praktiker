@@ -1,4 +1,4 @@
-package com.praktiker.shop.mappers;
+package com.praktiker.shop.mappers.product;
 
 import com.praktiker.shop.dto.product.ProductCreateRequest;
 import com.praktiker.shop.dto.product.stock.ProductStockResponse;

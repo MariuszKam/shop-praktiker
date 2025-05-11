@@ -1,13 +1,13 @@
-package com.praktiker.shop.services;
+package com.praktiker.shop.services.user;
 
 import com.praktiker.shop.dto.user.UserRegisterRequest;
 import com.praktiker.shop.dto.user.UserRegisterResponse;
 import com.praktiker.shop.entities.user.Role;
 import com.praktiker.shop.entities.user.User;
-import com.praktiker.shop.exceptions.RoleNotFoundException;
-import com.praktiker.shop.mappers.UserMapper;
-import com.praktiker.shop.persistance.RoleRepository;
-import com.praktiker.shop.persistance.UserRepository;
+import com.praktiker.shop.exceptions.user.RoleNotFoundException;
+import com.praktiker.shop.mappers.user.UserMapper;
+import com.praktiker.shop.persistance.user.RoleRepository;
+import com.praktiker.shop.persistance.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

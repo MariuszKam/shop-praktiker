@@ -1,4 +1,4 @@
-package com.praktiker.shop.mappers;
+package com.praktiker.shop.mappers.order;
 
 import com.praktiker.shop.dto.order.OrderItemRequest;
 import com.praktiker.shop.dto.order.OrderItemResponse;

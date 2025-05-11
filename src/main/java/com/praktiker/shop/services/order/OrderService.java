@@ -1,4 +1,4 @@
-package com.praktiker.shop.services;
+package com.praktiker.shop.services.order;
 
 import com.praktiker.shop.dto.order.OrderCreateRequest;
 import com.praktiker.shop.dto.order.OrderItemRequest;
@@ -9,14 +9,14 @@ import com.praktiker.shop.entities.order.OrderItem;
 import com.praktiker.shop.entities.order.OrderStatus;
 import com.praktiker.shop.entities.product.Product;
 import com.praktiker.shop.entities.user.User;
-import com.praktiker.shop.exceptions.OrderNotFoundException;
-import com.praktiker.shop.exceptions.ProductNotFoundException;
-import com.praktiker.shop.exceptions.UserNotFoundException;
-import com.praktiker.shop.mappers.OrderItemMapper;
-import com.praktiker.shop.mappers.OrderMapper;
-import com.praktiker.shop.persistance.OrderRepository;
+import com.praktiker.shop.exceptions.order.OrderNotFoundException;
+import com.praktiker.shop.exceptions.product.ProductNotFoundException;
+import com.praktiker.shop.exceptions.user.UserNotFoundException;
+import com.praktiker.shop.mappers.order.OrderItemMapper;
+import com.praktiker.shop.mappers.order.OrderMapper;
+import com.praktiker.shop.persistance.order.OrderRepository;
 import com.praktiker.shop.persistance.product.ProductRepository;
-import com.praktiker.shop.persistance.UserRepository;
+import com.praktiker.shop.persistance.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;

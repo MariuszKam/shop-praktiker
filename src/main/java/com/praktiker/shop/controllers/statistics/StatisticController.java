@@ -1,4 +1,4 @@
-package com.praktiker.shop.controllers;
+package com.praktiker.shop.controllers.statistics;
 
 import com.praktiker.shop.dto.order.OrderResponse;
 import com.praktiker.shop.dto.product.ProductResponse;

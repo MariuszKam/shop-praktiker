@@ -1,9 +1,9 @@
-package com.praktiker.shop.controllers;
+package com.praktiker.shop.controllers.order;
 
 import com.praktiker.shop.dto.order.OrderCreateRequest;
 import com.praktiker.shop.dto.order.OrderResponse;
 import com.praktiker.shop.dto.order.OrderStatusUpdateRequest;
-import com.praktiker.shop.services.OrderService;
+import com.praktiker.shop.services.order.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

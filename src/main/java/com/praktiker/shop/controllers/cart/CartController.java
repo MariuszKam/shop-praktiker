@@ -1,6 +1,6 @@
-package com.praktiker.shop.controllers;
+package com.praktiker.shop.controllers.cart;
 
-import com.praktiker.shop.services.CartService;
+import com.praktiker.shop.services.cart.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;

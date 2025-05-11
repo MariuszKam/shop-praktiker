@@ -1,8 +1,8 @@
-package com.praktiker.shop.controllers;
+package com.praktiker.shop.controllers.user;
 
 import com.praktiker.shop.dto.user.UserRegisterRequest;
 import com.praktiker.shop.dto.user.UserRegisterResponse;
-import com.praktiker.shop.services.AuthService;
+import com.praktiker.shop.services.user.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

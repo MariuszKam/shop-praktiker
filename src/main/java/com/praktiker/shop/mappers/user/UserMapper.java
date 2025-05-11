@@ -1,4 +1,4 @@
-package com.praktiker.shop.mappers;
+package com.praktiker.shop.mappers.user;
 
 import com.praktiker.shop.dto.user.UserRegisterRequest;
 import com.praktiker.shop.dto.user.UserRegisterResponse;

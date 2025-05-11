@@ -1,4 +1,4 @@
-package com.praktiker.shop.services;
+package com.praktiker.shop.services.cart;
 
 import com.praktiker.shop.persistance.cart.CartItemRepository;
 import com.praktiker.shop.persistance.cart.CartRepository;
