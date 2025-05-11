@@ -11,6 +11,6 @@ public record CartResponse(
 
         BigDecimal totalPrice,
 
-        List<CartItemRequest> items
+        List<CartItemResponse> items
 ) {
 }

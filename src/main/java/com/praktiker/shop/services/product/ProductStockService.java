@@ -3,7 +3,7 @@ package com.praktiker.shop.services.product;
 import com.praktiker.shop.dto.product.stock.ProductStockRequest;
 import com.praktiker.shop.dto.product.stock.ProductStockResponse;
 import com.praktiker.shop.entities.product.stock.ProductStock;
-import com.praktiker.shop.exceptions.product.ProductStockNotFoundException;
+import com.praktiker.shop.exceptions.product.stock.ProductStockNotFoundException;
 import com.praktiker.shop.mappers.product.ProductStockMapper;
 import com.praktiker.shop.persistance.product.ProductStockRepository;
 import lombok.RequiredArgsConstructor;
